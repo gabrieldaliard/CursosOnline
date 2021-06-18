@@ -1,0 +1,10 @@
+﻿@page "/CursosPage"
+@using CursoApp.Shared.DataBaseModels; 
+
+<RadzenGrid AllowPaging="true" Data="@xCurso"  TItem="CursoApp.Shared.DataBaseModels.Cursos" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowSorting="true" AllowFiltering="true" PageSize="5" ColumnWidth="50px">
+    <Columns>
+        <RadzenGridColumn TItem="Cursos" Property="Titulo" Title="Nombre Curso" />
+        <RadzenGridColumn TItem="Cursos" Property="IdCurso" Title="Curso id" />
+
+    </Columns>
+</RadzenGrid>

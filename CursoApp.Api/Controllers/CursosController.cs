@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace CursoApp.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    
     public class CursosController : Controller
     {
         private readonly ICursoRepository _cursoRepository;
@@ -20,8 +20,8 @@ namespace CursoApp.Api.Controllers
             _cursoRepository = CursoRepository;
         }
 
-        [HttpPost]
-        //[Route("Api/GetAllCursos")]
+        [HttpGet]
+        [Route("Api/GetAllCursos")]
         public IActionResult GetAllCursos(int cantFilasPagina = 0, int offSetPagina = 0, string orderBy = "")
         {
             try
@@ -34,8 +34,8 @@ namespace CursoApp.Api.Controllers
             }
         }
 
-        [HttpGet("{xCursoId}")]
-        //[Route("Api/GetCursoById/xCursoId")]
+        [HttpGet]
+        [Route("api/GetCursoById/{xCursoId}")]
         public IActionResult GetCursoById(int xCursoId)
         {
             try
@@ -48,8 +48,8 @@ namespace CursoApp.Api.Controllers
             }
         }
 
-        [HttpDelete("{xCursoId}")]
-        //[Route("Api/DeleteCursoById/xCursoId")]
+        [HttpDelete]
+        [Route("api/DeleteCursoById/{xCursoId}")]
         public IActionResult DeleteCursoById(int xCursoId)
         {
             try
@@ -71,7 +71,8 @@ namespace CursoApp.Api.Controllers
         }
 
         [HttpPost]
-        [Route("AddCurso")]
+        [Route("api/AddCurso")]
+        //[Route("AddCurso")]
         public IActionResult AddCurso([FromBody] Cursos curso)
         {
             try
@@ -92,8 +93,10 @@ namespace CursoApp.Api.Controllers
             }
         }
 
+
         [HttpPut]
-        [Route("UpdateCurso")]
+        [Route("api/UpdateCurso")]
+        //[Route("UpdateCurso")]
         public IActionResult UpdateCurso([FromBody] Cursos curso)
         {
             try
