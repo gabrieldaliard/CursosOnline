@@ -18,7 +18,6 @@ namespace CursoApp.Shared.DataBaseModels
         }
 
         public virtual DbSet<Cursos> Cursos { get; set; }
-        public virtual DbSet<Estados> Estados { get; set; }
         public virtual DbSet<InfoAcademia> InfoAcademia { get; set; }
         public virtual DbSet<Instructores> Instructores { get; set; }
         public virtual DbSet<Paises> Paises { get; set; }
@@ -63,28 +62,13 @@ namespace CursoApp.Shared.DataBaseModels
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.IdEstadoNavigation)
-                    .WithMany(p => p.Cursos)
-                    .HasForeignKey(d => d.IdEstado)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Cursos_Estados");
-
                 entity.HasOne(d => d.idInstructorNavigation)
                     .WithMany(p => p.Cursos)
                     .HasForeignKey(d => d.idInstructor)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Cursos_Instructores");
             });
-
-            modelBuilder.Entity<Estados>(entity =>
-            {
-                entity.HasKey(e => e.IdEstado)
-                    .HasName("PK__Estados__FBB0EDC1C0831247");
-
-                entity.Property(e => e.Descripcion)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
+                        
 
             modelBuilder.Entity<InfoAcademia>(entity =>
             {

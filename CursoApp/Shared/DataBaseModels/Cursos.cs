@@ -19,10 +19,9 @@ namespace CursoApp.Shared.DataBaseModels
         public DateTime? FechaModificacion { get; set; }
         public int? Interesados { get; set; }
         public int? Estudiantes { get; set; }
-        public int IdEstado { get; set; }
+        public bool IdEstado { get; set; }
         public bool Destacado { get; set; }
 
-        public virtual Estados IdEstadoNavigation { get; set; }
         public virtual Instructores idInstructorNavigation { get; set; }
         public virtual ICollection<UsuariosCursos> UsuariosCursos { get; set; }
     }

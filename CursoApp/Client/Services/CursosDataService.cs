@@ -31,7 +31,6 @@ namespace CursoApp.Client.Services
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<Cursos>>
                 (await _httpClient.GetStreamAsync($"Api/GetAllCursos"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
         }
 
         public Task<int> GetCantCurso()

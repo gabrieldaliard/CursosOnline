@@ -6,28 +6,34 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Cursos
-            </NavLink>
-        </li>
-    </ul>
+    @*<ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="CursosPage">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Cursos
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="UsariosPage">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Alumnos
+                </NavLink>
+            </li>
+        </ul>*@
+    <RadzenPanelMenu>
+    </RadzenPanelMenu>
+    <RadzenPanelMenu>
+        <RadzenPanelMenuItem Text="General" Path="" Icon="home">        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Cursos" Icon="inventory_2">
+            <RadzenPanelMenuItem Text="Listado curso" Path="CursosPage" Icon="list"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Crear curso" Path="CrearCursosPage" Icon="add"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Usuarios" Path="UsuariosPage" Icon="account_box"></RadzenPanelMenuItem>
+
+    </RadzenPanelMenu>
 </div>
 
 @code {

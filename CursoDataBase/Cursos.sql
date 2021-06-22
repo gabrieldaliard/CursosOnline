@@ -7,8 +7,7 @@
     [FechaModificacion] DATETIME NULL DEFAULT getDate(), 
     [Interesados] INT NULL DEFAULT 0, 
     [Estudiantes] INT NULL DEFAULT 0, 
-    [IdEstado] INT NOT NULL DEFAULT 1, 
+    [IdEstado] BIT NOT NULL DEFAULT 0, 
     [Destacado] BIT NOT NULL DEFAULT 0 ,
     CONSTRAINT [FK_Cursos_Instructores] FOREIGN KEY ([idInstructor]) REFERENCES [Instructores]([IdInstructor]),
-    CONSTRAINT [FK_Cursos_Estados] FOREIGN KEY ([IdEstado]) REFERENCES [Estados]([IdEstado])
 )
