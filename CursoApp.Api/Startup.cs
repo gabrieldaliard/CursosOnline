@@ -40,7 +40,7 @@ namespace CursoApp.Api
             //Cuando una clase solicite a la clase CursoRepository, el contenedor se encarga de generarla y entregarla.
             //Se crea CursoRepository cuando se solicite la interfaz ICursoRepository
             services.AddScoped<IEntidadRepository<Cursos>, CursoRepository<Cursos>>();
-            services.AddScoped<IInstructorRepository, InstructorRepository>();
+            services.AddScoped<IEntidadRepository<Instructores>, InstructorRepository<Instructores>>();
 
             services.AddCors(options =>
             {

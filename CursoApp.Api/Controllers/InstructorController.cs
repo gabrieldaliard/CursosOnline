@@ -10,116 +10,111 @@ using CursoApp.Api.Models;
 namespace CursoApp.Api.Controllers
 {
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class InstructorController : Controller
     {
-        private readonly IInstructorRepository _instructorRepository;
+        private readonly IEntidadRepository<Instructores> _instructorRepository;
 
-        public InstructorController(IInstructorRepository InstructorRepository)
+        public InstructorController(IEntidadRepository<Instructores> InstructorRepository)
         {
             _instructorRepository = InstructorRepository;
         }
 
-        //[HttpGet]
-        //[Route("Api/GetAllCursos")]
-        ////[Route("Api/[controller]")] --> lo que sea que este antes de la palabara controller.
-        //public IActionResult GetAllCursos(int cantFilasPagina = 0, int offSetPagina = 0, string orderBy = "")
-        //{
-        //    try
-        //    {
-        //        return Ok(_cursoRepository.GetAllCursos());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+        [HttpGet]     
+        public IActionResult GetAll(int cantFilasPagina = 0, int offSetPagina = 0, string orderBy = "")
+        {
+            try
+            {
+                return Ok(_instructorRepository.GetAllEntidades());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error al obtener los cursos. Contacte con el administrador.");
+            }
+        }
 
-        //[HttpGet]
-        //[Route("api/GetCursoById/{xCursoId}")]
-        //public IActionResult GetCursoById(int xCursoId)
-        //{
-        //    try
-        //    {
-        //        return Ok(_cursoRepository.GetCursoById(xCursoId));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+        [HttpGet("{xId}")]
+        public IActionResult GetById(int xId)
+        {
+            try
+            {
+                return Ok(_instructorRepository.GetEntidadById(xId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
-        //[HttpDelete]
-        //[Route("api/DeleteCursoById/{xCursoId}")]
-        //public IActionResult DeleteCursoById(int xCursoId)
-        //{
-        //    try
-        //    {
-        //        if (xCursoId == 0)
-        //            return BadRequest();
+        [HttpDelete("{xId}")]
+        public IActionResult DeleteById(int xId)
+        {
+            try
+            {
+                if (xId == 0)
+                    return BadRequest();
 
-        //        var cursoToDelete = _cursoRepository.GetCursoById(xCursoId);
-        //        if (cursoToDelete == null)
-        //            return NotFound();
+                var instructorToDelete = _instructorRepository.GetEntidadById(xId);
+                if (instructorToDelete == null)
+                    return NotFound();
 
-        //        _cursoRepository.DeleteCursoById(xCursoId);
-        //        return NoContent();//success
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                _instructorRepository.DeleteEntidadById(xId);
+                return NoContent();//success
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
-        //[HttpPost]
-        //[Route("api/AddCurso")]
-        ////[Route("AddCurso")]
-        //public IActionResult AddCurso([FromBody] Cursos curso)
-        //{
-        //    try
-        //    {
-        //        if (curso == null)
-        //            return BadRequest();
+        [HttpPost]
+        public IActionResult Add([FromBody] Instructores xInstructor)
+        {
+            try
+            {
+                if (xInstructor == null)
+                    return BadRequest();
 
-        //        if (!ModelState.IsValid)
-        //            return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-        //        var createdCurso = _cursoRepository.AddCurso(curso);
+                var createdInstructor = _instructorRepository.AddEntidad(xInstructor);
 
-        //        return Created("curso", createdCurso);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                return Created("curso", createdInstructor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
 
-        //[HttpPut]
-        //[Route("api/UpdateCurso")]
-        ////[Route("UpdateCurso")]
-        //public IActionResult UpdateCurso([FromBody] Cursos curso)
-        //{
-        //    try
-        //    {
-        //        if (curso == null)
-        //            return BadRequest();
+        [HttpPut]
+        public IActionResult Update([FromBody] Instructores xInstructor)
+        {
+            try
+            {
+                if (xInstructor == null)
+                    return BadRequest();
 
-        //        if (!ModelState.IsValid)
-        //            return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-        //        var cursoToUpdate = _cursoRepository.GetCursoById(curso.IdCurso);
+                var instructorToUpdate = _instructorRepository.GetEntidadById(xInstructor.idEntidad);
 
-        //        if (cursoToUpdate == null)
-        //            return NotFound();
+                if (instructorToUpdate == null)
+                    return NotFound();
 
-        //        _cursoRepository.UpdateCurso(curso);
+                _instructorRepository.UpdateEntidad(xInstructor);
 
-        //        return NoContent(); //success
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                return NoContent(); //success
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
     }
 }

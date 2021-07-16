@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CursoApp.Shared.DataBaseModels;
 
 namespace CursoApp.Api.Models
 {
-    public class InstructorRepository : IInstructorRepository
+    public class InstructorRepository<t> : IEntidadRepository<t> where t : class
     {
         private readonly AppDbContext _appDbContext;
 
@@ -16,62 +15,66 @@ namespace CursoApp.Api.Models
             _appDbContext = appDbContext;
         }
 
-        public Instructores AddInstructor(Instructores xInstructor)
+        public t AddEntidad(t obj)
         {
             using (_appDbContext)
             {
-                var newEntity = _appDbContext.Instructores.Add(xInstructor);
+                var newEntity = _appDbContext.Add(obj);
                 _appDbContext.SaveChanges();
-                return newEntity.Entity;
+                return (t)newEntity.Entity;
             }
         }
 
-        public void DeleteInstructorById(int xInstructorId)
+
+        public void DeleteEntidadById(int xId)
         {
             using (_appDbContext)
             {
-                _appDbContext.Instructores.Remove(_appDbContext.Instructores.FirstOrDefault(c => c.idEntidad == xInstructorId));
-                _appDbContext.SaveChanges();
-            }
+                var foundEntidad = _appDbContext.Set<t>().Find(xId);
 
-        }
-
-        public IEnumerable<Instructores> GetAllInstructores()
-        {
-            return _appDbContext.Instructores;
-        }
-
-        public int GetCountInstructor()
-        {
-            return _appDbContext.Instructores.Count();
-        }
-
-        public Instructores GetInstructorById(int xInstructorId)
-        {
-            return _appDbContext.Instructores.FirstOrDefault(c => c.idEntidad == xInstructorId);
-        }
-
-        public void UpdateInstructor(Instructores xInstructor)
-        {
-            using (_appDbContext)
-            {
-                var foundInstructor = _appDbContext.Instructores.FirstOrDefault(e => e.idEntidad == xInstructor.idEntidad);
-
-                if (foundInstructor != null)
+                if (foundEntidad != null)
                 {
-                    foundInstructor.Apellido = xInstructor.Apellido;
-                    foundInstructor.Cursos = xInstructor.Cursos;
-                    foundInstructor.Descripción = xInstructor.Descripción;
-                    foundInstructor.IdPais = 1;
-                    foundInstructor.Nombre = xInstructor.Nombre;
-
+                    _appDbContext.Remove(foundEntidad);
                     _appDbContext.SaveChanges();
-
                 }
-
-                throw new Exception("Error al actualizar el Instructor.");
             }
+        }
 
+
+        public IEnumerable<t> GetAllEntidades()
+        {
+            try
+            {
+                return _appDbContext.Set<t>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los datos de los cursos.");
+            }
+        }
+
+        public int GetCountEntidad()
+        {
+            return _appDbContext.Set<t>().Count();
+        }
+
+        public t GetEntidadById(int xId)
+        {
+            return _appDbContext.Set<t>().Find(xId);
+        }
+
+        public void UpdateEntidad(t obj)
+        {
+            using (_appDbContext)
+            {
+                var foundEntidad = _appDbContext.Entry(obj);
+
+                if (foundEntidad != null)
+                {
+                    _appDbContext.Entry(foundEntidad).CurrentValues.SetValues(obj);
+                    _appDbContext.SaveChanges();
+                }
+            }
         }
     }
 }

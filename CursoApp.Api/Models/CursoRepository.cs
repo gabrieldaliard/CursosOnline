@@ -12,12 +12,10 @@ namespace CursoApp.Api.Models
     public class CursoRepository<t> : IEntidadRepository<t> where t : class
     {
         private readonly AppDbContext _appDbContext;
-        //protected DbSet<t> DbSet { get; set; }
 
         public CursoRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
-            //DbSet = DbContext.Set<t>();
         }
 
         public t AddEntidad(t obj)

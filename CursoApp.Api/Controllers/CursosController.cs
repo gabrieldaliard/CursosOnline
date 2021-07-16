@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace CursoApp.Api.Controllers
 {
     [ApiController]
-    //[Route("Api/[controller]")] --> lo que sea que este antes de la palabara controller.
+    [Route("api/[controller]/[action]")]
     public class CursosController : Controller
     {
         private readonly IEntidadRepository<Cursos> _cursoRepository;
@@ -21,9 +21,8 @@ namespace CursoApp.Api.Controllers
         }
 
         [HttpGet]
-        [Route("Api/GetAllCursos")]
         //[Route("Api/[controller]")] --> lo que sea que este antes de la palabara controller.
-        public IActionResult GetAllCursos(int cantFilasPagina = 0, int offSetPagina = 0, string orderBy = "")
+        public IActionResult GetAll(int cantFilasPagina = 0, int offSetPagina = 0, string orderBy = "")
         {
             try
             {
@@ -35,13 +34,12 @@ namespace CursoApp.Api.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("api/GetCursoById/{xCursoId}")]
-        public IActionResult GetCursoById(int xCursoId)
+        [HttpGet("{xId}")]
+        public IActionResult GetById(int xId)
         {
             try
             {
-                return Ok(_cursoRepository.GetEntidadById(xCursoId));
+                return Ok(_cursoRepository.GetEntidadById(xId));
             }
             catch (Exception ex)
             {
@@ -49,20 +47,19 @@ namespace CursoApp.Api.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("api/DeleteCursoById/{xCursoId}")]
-        public IActionResult DeleteCursoById(int xCursoId)
+        [HttpDelete("{xId}")]
+        public IActionResult DeleteById(int xId)
         {
             try
             {
-                if (xCursoId == 0)
+                if (xId == 0)
                     return BadRequest();
 
-                var cursoToDelete = _cursoRepository.GetEntidadById(xCursoId);
+                var cursoToDelete = _cursoRepository.GetEntidadById(xId);
                 if (cursoToDelete == null)
                     return NotFound();
 
-                _cursoRepository.DeleteEntidadById(xCursoId);
+                _cursoRepository.DeleteEntidadById(xId);
                 return NoContent();//success
             }
             catch (Exception ex)
@@ -72,9 +69,7 @@ namespace CursoApp.Api.Controllers
         }
 
         [HttpPost]
-        [Route("api/AddCurso")]
-        //[Route("AddCurso")]
-        public IActionResult AddCurso([FromBody] Cursos curso)
+        public IActionResult Add([FromBody] Cursos curso)
         {
             try
             {
@@ -96,9 +91,7 @@ namespace CursoApp.Api.Controllers
 
 
         [HttpPut]
-        [Route("api/UpdateCurso")]
-        //[Route("UpdateCurso")]
-        public IActionResult UpdateCurso([FromBody] Cursos curso)
+        public IActionResult Update([FromBody] Cursos curso)
         {
             try
             {
