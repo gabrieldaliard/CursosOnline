@@ -24,7 +24,7 @@ namespace CursoApp.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)  //---> contenedor
         {
 
             services.AddControllers();
@@ -37,7 +37,10 @@ namespace CursoApp.Api
             services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //Cuando una clase solicite a la clase CursoRepository, el contenedor se encarga de generarla y entregarla.
+            //Se crea CursoRepository cuando se solicite la interfaz ICursoRepository
             services.AddScoped<ICursoRepository, CursoRepository>();
+            services.AddScoped<IInstructorRepository, InstructorRepository>();
 
             services.AddCors(options =>
             {

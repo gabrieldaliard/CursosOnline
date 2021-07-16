@@ -1,0 +1,39 @@
+﻿@page "/detalleCursoPage"
+@page "/detalleCursoPage/{CursoId:int}"
+
+@using CursoApp.Shared.DataBaseModels;
+
+<RadzenTemplateForm TItem="@Cursos" Data="Curso" Submit="handleSubmmit" InvalidSubmit="handleInvalidSubmmit">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-8">
+                <RadzenLabel Text="Titulo:" />
+                <RadzenTextBox @bind-Value="Curso.Titulo" Placeholder="Titulo" style="width: 100%;">
+                </RadzenTextBox>
+            </div>
+            <div class="col-md-8">
+                <RadzenLabel Text="Estudiantes:" />
+                <RadzenNumeric @bind-Value="Curso.Estudiantes" Placeholder="" style="width: 100%;">
+                </RadzenNumeric>
+            </div>
+            <div class="col-md-8">
+                <RadzenLabel Text="Fecha de Creación:" />
+                <RadzenDatePicker @bind-Value="Curso.FechaCreacion" DateFormat="d" Placeholder="" style="width: 100%;">
+                </RadzenDatePicker>
+            </div>
+            <div class="col-md-8">
+                <RadzenLabel Text="Fecha de Modificación:" />
+                <RadzenDatePicker @bind-Value="Curso.FechaModificacion" DateFormat="d" Placeholder="" style="width: 100%;">
+                </RadzenDatePicker>
+            </div>
+            <div class="col-md-8">
+                <RadzenLabel Text="Instructor:" />
+                <RadzenNumeric @bind-Value="Curso.idInstructor" Placeholder="" style="width: 100%;">
+                </RadzenNumeric>
+            </div>
+        </div>
+    </div>
+    <RadzenButton Text="Aceptar" Icon="save" ButtonType="ButtonType.Submit">
+
+    </RadzenButton>
+</RadzenTemplateForm>

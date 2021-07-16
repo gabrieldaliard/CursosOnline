@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -12,7 +13,10 @@ namespace CursoApp.Shared.DataBaseModels
             Cursos = new HashSet<Cursos>();
         }
 
-        public int IdInstructor { get; set; }
+        [NotMapped]
+        public int idEntidad { get => IdInstructor; set => IdInstructor = value; }
+
+        internal int IdInstructor { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Descripción { get; set; }

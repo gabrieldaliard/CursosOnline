@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -7,7 +8,9 @@ namespace CursoApp.Shared.DataBaseModels
 {
     public partial class UsuariosCursos
     {
-        public int Id { get; set; }
+        [NotMapped]
+        public int idEntidad { get => Id; set => Id = value; }
+        internal int Id { get; set; }
         public int IdCurso { get; set; }
         public int IdUsuario { get; set; }
 

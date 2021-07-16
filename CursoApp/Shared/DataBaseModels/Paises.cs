@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -13,7 +14,9 @@ namespace CursoApp.Shared.DataBaseModels
             Usuarios = new HashSet<Usuarios>();
         }
 
-        public int IdPais { get; set; }
+        [NotMapped]
+        public int idEntidad { get => IdPais; set => IdPais = value; }
+        internal int IdPais { get; set; }
         public string Descripcion { get; set; }
 
         public virtual ICollection<Instructores> Instructores { get; set; }

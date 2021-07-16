@@ -19,52 +19,70 @@ namespace CursoApp.Api.Models
 
         public Cursos AddCurso(Cursos curso)
         {
-            var newEntity = _appDbContext.Cursos.Add(curso);
-            _appDbContext.SaveChanges();
-            return newEntity.Entity;
+            using (_appDbContext)
+            {
+                var newEntity = _appDbContext.Cursos.Add(curso);
+                _appDbContext.SaveChanges();
+                return newEntity.Entity;
+            }
         }
 
-        public void DeleteCursoById(int cursoId)
+        public void DeleteCursoById(int xId)
         {
-            _appDbContext.Cursos.Remove(_appDbContext.Cursos.FirstOrDefault(c => c.IdCurso == cursoId));
-            _appDbContext.SaveChanges();
+            using (_appDbContext)
+            {
+                _appDbContext.Cursos.Remove(_appDbContext.Cursos.FirstOrDefault(c => c.idEntidad == xId));
+                _appDbContext.SaveChanges();
+            }
+                
         }
 
         public IEnumerable<Cursos> GetAllCursos()
         {
-            return _appDbContext.Cursos;
+            try
+            {
+                var res = _appDbContext.Cursos;
+                return res;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error al obtener los datos de los cursos.");
+            }
+            
         }
 
-        public int GetCantCurso()
+        public int GetCountCurso()
         {
             return _appDbContext.Cursos.Count();
         }
 
-        public Cursos GetCursoById(int cursoId)
+        public Cursos GetCursoById(int xId)
         {
-            return _appDbContext.Cursos.FirstOrDefault(c => c.IdCurso == cursoId);
+            return _appDbContext.Cursos.FirstOrDefault(c => c.idEntidad == xId);
         }
 
-        public Cursos UpdateCurso(Cursos curso)
+        public void UpdateCurso(Cursos curso)
         {
-            var foundCurso = _appDbContext.Cursos.FirstOrDefault(e => e.IdCurso == curso.IdCurso);
-
-            if (foundCurso != null)
+            using (_appDbContext)
             {
-                foundCurso.Titulo = curso.Titulo;
-                foundCurso.idInstructor = curso.idInstructor;
-                foundCurso.IdEstado = curso.IdEstado;
-                foundCurso.FechaModificacion = curso.FechaModificacion;
-                foundCurso.Interesados = curso.Interesados;
-                foundCurso.Estudiantes = curso.Estudiantes;
-                foundCurso.Destacado = curso.Destacado;
+                var foundCurso = _appDbContext.Cursos.FirstOrDefault(e => e.idEntidad == curso.idEntidad);
 
-                _appDbContext.SaveChanges();
+                if (foundCurso != null)
+                {
+                    foundCurso.Titulo = curso.Titulo;
+                    foundCurso.idInstructor = curso.idInstructor;
+                    foundCurso.IdEstado = curso.IdEstado;
+                    foundCurso.FechaModificacion = curso.FechaModificacion;
+                    foundCurso.Interesados = curso.Interesados;
+                    foundCurso.Estudiantes = curso.Estudiantes;
+                    foundCurso.Destacado = curso.Destacado;
 
-                return foundCurso;
-            }
+                    _appDbContext.SaveChanges();
+                    
+                }
 
-            return null;
+                throw new Exception("Error al actualizar el curso.");
+            }              
 
         }
     }

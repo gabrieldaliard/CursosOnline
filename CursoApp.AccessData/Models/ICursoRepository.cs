@@ -11,8 +11,8 @@ namespace CursoApp.Api.Models
             IEnumerable<Cursos> GetAllCursos();
             Cursos GetCursoById(int cursoId);
             Cursos AddCurso(Cursos curso);
-            void UpdateCurso(Cursos curso);
-            int GetCountCurso();
+            Cursos UpdateCurso(Cursos curso);
+            int GetCantCurso();
             void DeleteCursoById(int cursoId);
     }
 }

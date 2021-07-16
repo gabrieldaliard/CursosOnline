@@ -9,10 +9,10 @@ namespace CursoApp.Client.Services
     public interface iCursosDataService
     {
         public Task<IEnumerable<Cursos>> GetAllCursos();
-        Cursos GetCursoById(int cursoId);
-        Cursos AddCurso(Cursos curso);
-        Cursos UpdateCurso(Cursos curso);
-        Task<int> GetCantCurso();
-        void DeleteCursoById(int cursoId);
+        public Task<Cursos> GetCursoById(int cursoId);
+        public Task<Cursos> AddCurso(Cursos curso);
+        public Task UpdateCurso(Cursos curso);
+        public Task<int> GetCantCurso();
+        public Task DeleteCursoById(int cursoId);
     }
 }

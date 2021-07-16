@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace CursoApp.Api.Controllers
 {
     [ApiController]
-    
+    //[Route("Api/[controller]")] --> lo que sea que este antes de la palabara controller.
     public class CursosController : Controller
     {
         private readonly ICursoRepository _cursoRepository;
@@ -22,6 +22,7 @@ namespace CursoApp.Api.Controllers
 
         [HttpGet]
         [Route("Api/GetAllCursos")]
+        //[Route("Api/[controller]")] --> lo que sea que este antes de la palabara controller.
         public IActionResult GetAllCursos(int cantFilasPagina = 0, int offSetPagina = 0, string orderBy = "")
         {
             try
@@ -30,7 +31,7 @@ namespace CursoApp.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Error al obtener los cursos. Contacte con el administrador.");
             }
         }
 
@@ -107,12 +108,12 @@ namespace CursoApp.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var cursoToUpdate = _cursoRepository.GetCursoById(curso.IdCurso);
+                var cursoToUpdate = _cursoRepository.GetCursoById(curso.idEntidad);
 
                 if (cursoToUpdate == null)
                     return NotFound();
 
-                _cursoRepository.UpdateCurso(cursoToUpdate);
+                _cursoRepository.UpdateCurso(curso);
 
                 return NoContent(); //success
             }

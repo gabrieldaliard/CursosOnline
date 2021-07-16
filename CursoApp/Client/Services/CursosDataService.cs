@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Net.Http;
+using System.Text;
 
 namespace CursoApp.Client.Services
 {
@@ -17,12 +18,12 @@ namespace CursoApp.Client.Services
             _httpClient = httpClient;
         }
 
-        public Cursos AddCurso(Cursos curso)
+        public async Task<Cursos> AddCurso(Cursos curso)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteCursoById(int cursoId)
+        public async Task DeleteCursoById(int cursoId)
         {
             throw new NotImplementedException();
         }
@@ -33,19 +34,23 @@ namespace CursoApp.Client.Services
                 (await _httpClient.GetStreamAsync($"Api/GetAllCursos"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public Task<int> GetCantCurso()
+        public async Task<int> GetCantCurso()
         {
             throw new NotImplementedException();
         }
 
-        public Cursos GetCursoById(int cursoId)
+        public async Task<Cursos> GetCursoById(int cursoId)
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<Cursos>
+                (await _httpClient.GetStreamAsync($"Api/GetCursoById/{cursoId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public Cursos UpdateCurso(Cursos curso)
+        public async Task UpdateCurso(Cursos curso)
         {
-            throw new NotImplementedException();
+            var cursoJson =
+                new StringContent(JsonSerializer.Serialize(curso), Encoding.UTF8, "application/json");
+
+            await _httpClient.PutAsync("api/UpdateCurso", cursoJson);
         }
     }
 }
