@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace CursoApp.Api.Models
 {
-    interface IEntidadRepository
+    public interface IEntidadRepository<t> where t : class
     {
-        public IEnumerable<T> GetAllEntidades<T>();       
-        public t GetEntidadById<t>(int xId);
-        public t AddEntidad<t>(t obj);
-        public void UpdateEntidad<t>(t obj);
-        int GetCountEntidad();
-        void DeleteEntidadById(int xId);
+        public IEnumerable<t> GetAllEntidades();       
+        public t GetEntidadById(int xId);
+        public t AddEntidad(t obj);
+        public void UpdateEntidad(t obj);
+        public int GetCountEntidad();
+        public void DeleteEntidadById(int xId);
     }
 }

@@ -5,85 +5,82 @@ using System.Linq;
 using System.Threading.Tasks;
 using CursoApp.Shared.DataBaseModels;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace CursoApp.Api.Models
 {
-    public class CursoRepository : ICursoRepository
+    public class CursoRepository<t> : IEntidadRepository<t> where t : class
     {
         private readonly AppDbContext _appDbContext;
+        //protected DbSet<t> DbSet { get; set; }
 
         public CursoRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+            //DbSet = DbContext.Set<t>();
         }
 
-        public Cursos AddCurso(Cursos curso)
+        public t AddEntidad(t obj)
         {
             using (_appDbContext)
             {
-                var newEntity = _appDbContext.Cursos.Add(curso);
+                var newEntity = _appDbContext.Add(obj);
                 _appDbContext.SaveChanges();
-                return newEntity.Entity;
+                return (t)newEntity.Entity;
             }
         }
 
-        public void DeleteCursoById(int xId)
+
+        public void DeleteEntidadById(int xId)
         {
             using (_appDbContext)
             {
-                _appDbContext.Cursos.Remove(_appDbContext.Cursos.FirstOrDefault(c => c.idEntidad == xId));
-                _appDbContext.SaveChanges();
+                var foundEntidad = _appDbContext.Set<t>().Find(xId);
+
+                if (foundEntidad != null)
+                {
+                    _appDbContext.Remove(foundEntidad);
+                    _appDbContext.SaveChanges();
+                }
             }
-                
         }
 
-        public IEnumerable<Cursos> GetAllCursos()
+
+        public IEnumerable<t> GetAllEntidades()
         {
             try
             {
-                var res = _appDbContext.Cursos;
-                return res;
+                return _appDbContext.Set<t>();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Error al obtener los datos de los cursos.");
             }
-            
         }
 
-        public int GetCountCurso()
+        public int GetCountEntidad()
         {
-            return _appDbContext.Cursos.Count();
+            return _appDbContext.Set<t>().Count();
         }
 
-        public Cursos GetCursoById(int xId)
+        public t GetEntidadById(int xId)
         {
-            return _appDbContext.Cursos.FirstOrDefault(c => c.idEntidad == xId);
+            return _appDbContext.Set<t>().Find(xId);            
         }
-
-        public void UpdateCurso(Cursos curso)
+       
+        public void UpdateEntidad(t obj)
         {
             using (_appDbContext)
-            {
-                var foundCurso = _appDbContext.Cursos.FirstOrDefault(e => e.idEntidad == curso.idEntidad);
-
-                if (foundCurso != null)
+            {                
+                var foundEntidad = _appDbContext.Entry(obj);
+                
+                if (foundEntidad != null)
                 {
-                    foundCurso.Titulo = curso.Titulo;
-                    foundCurso.idInstructor = curso.idInstructor;
-                    foundCurso.IdEstado = curso.IdEstado;
-                    foundCurso.FechaModificacion = curso.FechaModificacion;
-                    foundCurso.Interesados = curso.Interesados;
-                    foundCurso.Estudiantes = curso.Estudiantes;
-                    foundCurso.Destacado = curso.Destacado;
-
+                    _appDbContext.Entry(foundEntidad).CurrentValues.SetValues(obj);
                     _appDbContext.SaveChanges();
-                    
-                }
-
-                throw new Exception("Error al actualizar el curso.");
-            }              
-
+                }                        
+            }
         }
+
     }
 }

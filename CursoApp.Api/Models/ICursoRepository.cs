@@ -6,7 +6,7 @@ using CursoApp.Shared.DataBaseModels;
 
 namespace CursoApp.Api.Models
 {
-    public interface ICursoRepository
+    public interface ICursoRepository 
     {
             IEnumerable<Cursos> GetAllCursos();
             Cursos GetCursoById(int cursoId);
@@ -14,5 +14,8 @@ namespace CursoApp.Api.Models
             void UpdateCurso(Cursos curso);
             int GetCountCurso();
             void DeleteCursoById(int cursoId);
+
+            
+            
     }
 }
