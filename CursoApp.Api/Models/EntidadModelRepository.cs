@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using CursoApp.Shared.DataBaseModels;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace CursoApp.Api.Models
 {
-    public class InstructorRepository<t> : IEntidadRepository<t> where t : class
+    public class EntidadModelRepository<t> : IEntidadModelRepository<t> where t : class
     {
         private readonly AppDbContext _appDbContext;
 
-        public InstructorRepository(AppDbContext appDbContext)
+        public EntidadModelRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
 
-        public t AddEntidad(t obj)
+        public t AddEntidadModel(t obj)
         {
             using (_appDbContext)
             {
@@ -26,7 +29,7 @@ namespace CursoApp.Api.Models
         }
 
 
-        public void DeleteEntidadById(int xId)
+        public void DeleteEntidadModelById(int xId)
         {
             using (_appDbContext)
             {
@@ -41,7 +44,7 @@ namespace CursoApp.Api.Models
         }
 
 
-        public IEnumerable<t> GetAllEntidades()
+        public IEnumerable<t> GetAllEntidadesModel()
         {
             try
             {
@@ -53,28 +56,33 @@ namespace CursoApp.Api.Models
             }
         }
 
-        public int GetCountEntidad()
+        public int GetCountEntidadModel()
         {
             return _appDbContext.Set<t>().Count();
         }
 
-        public t GetEntidadById(int xId)
+        public t GetEntidadModelById(int xId)
         {
-            return _appDbContext.Set<t>().Find(xId);
+            return _appDbContext.Set<t>().Find(xId);            
         }
-
-        public void UpdateEntidad(t obj)
+       
+        public void UpdateEntidadModel(t obj)
         {
             using (_appDbContext)
-            {
-                var foundEntidad = _appDbContext.Entry(obj);
+            {                
+                var foundEntidad = _appDbContext.Find<t>(obj);
+
+                //var currentEntity = dbSetEntity.Find(id);
+                //_dbContext.Entry(currentEntity).CurrentValues.SetValues(newValues);
 
                 if (foundEntidad != null)
                 {
+
                     _appDbContext.Entry(foundEntidad).CurrentValues.SetValues(obj);
                     _appDbContext.SaveChanges();
-                }
+                }                        
             }
         }
+
     }
 }

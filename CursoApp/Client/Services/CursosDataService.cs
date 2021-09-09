@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CursoApp.Client.Services
 {
-    public class CursosDataService : iCursosDataService
+    public class CursosDataService<t> : iEntidadDataService<t> where t : class
     {
         private readonly HttpClient _httpClient;
 
@@ -18,39 +18,47 @@ namespace CursoApp.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<Cursos> AddCurso(Cursos curso)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task DeleteCursoById(int cursoId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Cursos>> GetAllCursos()
-        {
-            return await JsonSerializer.DeserializeAsync<IEnumerable<Cursos>>
-                (await _httpClient.GetStreamAsync($"Api/GetAllCursos"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-        }
-
-        public async Task<int> GetCantCurso()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Cursos> GetCursoById(int cursoId)
-        {
-            return await JsonSerializer.DeserializeAsync<Cursos>
-                (await _httpClient.GetStreamAsync($"Api/GetCursoById/{cursoId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-        }
-
-        public async Task UpdateCurso(Cursos curso)
+        public async Task<t> AddEntidad(t curso)
         {
             var cursoJson =
                 new StringContent(JsonSerializer.Serialize(curso), Encoding.UTF8, "application/json");
 
-            await _httpClient.PutAsync("api/UpdateCurso", cursoJson);
+            await _httpClient.PostAsync("api/Cursos/Add", cursoJson);
+
+            return curso;
+
+        }
+
+        public async Task DeleteEntidadById(int cursoId)
+        {
+            await JsonSerializer.DeserializeAsync<IEnumerable<Cursos>>
+                (await _httpClient.GetStreamAsync($"Api/Cursos/GetAll"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<IEnumerable<t>> GetAllEntidades()
+        {
+            return await JsonSerializer.DeserializeAsync<IEnumerable<t>>
+                (await _httpClient.GetStreamAsync($"Api/Cursos/GetAll"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<int> GetCantEntidad()
+        {
+            return await JsonSerializer.DeserializeAsync<int>
+                (await _httpClient.GetStreamAsync($"Api/Cursos/GetAll"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<t> GetEntidadById(int cursoId)
+        {
+            return await JsonSerializer.DeserializeAsync<t>
+                (await _httpClient.GetStreamAsync($"Api/Cursos/GetById/{cursoId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task UpdateEntidad(t curso)
+        {
+            var cursoJson =
+                new StringContent(JsonSerializer.Serialize(curso), Encoding.UTF8, "application/json");
+
+            await _httpClient.PutAsync("api/Cursos/Update", cursoJson);
         }
     }
 }

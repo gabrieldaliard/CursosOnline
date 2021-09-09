@@ -13,9 +13,9 @@ namespace CursoApp.Api.Controllers
     [Route("api/[controller]/[action]")]
     public class CursosController : Controller
     {
-        private readonly IEntidadRepository<Cursos> _cursoRepository;
+        private readonly IEntidadModelRepository<Cursos> _cursoRepository;
 
-        public CursosController(IEntidadRepository<Cursos> CursoRepository)
+        public CursosController(IEntidadModelRepository<Cursos> CursoRepository)
         {
             _cursoRepository = CursoRepository;
         }
@@ -26,7 +26,7 @@ namespace CursoApp.Api.Controllers
         {
             try
             {
-                return Ok(_cursoRepository.GetAllEntidades());
+                return Ok(_cursoRepository.GetAllEntidadesModel());
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ namespace CursoApp.Api.Controllers
         {
             try
             {
-                return Ok(_cursoRepository.GetEntidadById(xId));
+                return Ok(_cursoRepository.GetEntidadModelById(xId));
             }
             catch (Exception ex)
             {
@@ -55,11 +55,11 @@ namespace CursoApp.Api.Controllers
                 if (xId == 0)
                     return BadRequest();
 
-                var cursoToDelete = _cursoRepository.GetEntidadById(xId);
+                var cursoToDelete = _cursoRepository.GetEntidadModelById(xId);
                 if (cursoToDelete == null)
                     return NotFound();
 
-                _cursoRepository.DeleteEntidadById(xId);
+                _cursoRepository.DeleteEntidadModelById(xId);
                 return NoContent();//success
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace CursoApp.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var createdCurso = _cursoRepository.AddEntidad(curso);
+                var createdCurso = _cursoRepository.AddEntidadModel(curso);
 
                 return Created("curso", createdCurso);
             }
@@ -101,12 +101,12 @@ namespace CursoApp.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var cursoToUpdate = _cursoRepository.GetEntidadById(curso.idEntidad);
+                var cursoToUpdate = _cursoRepository.GetEntidadModelById(curso.idEntidad);
 
                 if (cursoToUpdate == null)
                     return NotFound();
 
-                _cursoRepository.UpdateEntidad(curso);
+                _cursoRepository.UpdateEntidadModel(curso);
 
                 return NoContent(); //success
             }

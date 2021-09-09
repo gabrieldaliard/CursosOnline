@@ -13,7 +13,9 @@ namespace CursoApp.Client.Pages
     public partial class CursosPage
     {
         [Inject]
-        public iCursosDataService CursoDataService { get; set; }
+        public iEntidadDataService<Cursos> CursoDataService { get; set; }
+
+        
 
         IEnumerable<Cursos> xCurso;
 
@@ -21,7 +23,7 @@ namespace CursoApp.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {            
-            xCurso = await CursoDataService.GetAllCursos();
+            xCurso = await CursoDataService.GetAllEntidades();
         }
 
 

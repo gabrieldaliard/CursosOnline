@@ -27,7 +27,17 @@
                 </RadzenDatePicker>
             </div>
             <div class="col-md-8">
-                <RadzenLabel Text="Instructor:" />
+                @*<RadzenDropDown AllowFiltering="true" AllowClear="true" TValue="string" Style="width:300px"
+        Data=@(Curso.idInstructor) />*@
+                <RadzenDropDown @bind-Value="Curso.idInstructor"
+                                Data="@listaInstructores"
+                                style="width: 100%;"
+                                TextProperty="Nombre"
+                                ValueProperty="idEntidad"
+                                Name="Instructor">
+                </RadzenDropDown>
+
+
                 <RadzenNumeric @bind-Value="Curso.idInstructor" Placeholder="" style="width: 100%;">
                 </RadzenNumeric>
             </div>

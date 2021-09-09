@@ -9,5 +9,6 @@
     [Estudiantes] INT NULL DEFAULT 0, 
     [IdEstado] BIT NOT NULL DEFAULT 0, 
     [Destacado] BIT NOT NULL DEFAULT 0 ,
+    [LinkVideo] NVARCHAR(MAX) NULL, 
     CONSTRAINT [FK_Cursos_Instructores] FOREIGN KEY ([idInstructor]) REFERENCES [Instructores]([IdInstructor]),
 )

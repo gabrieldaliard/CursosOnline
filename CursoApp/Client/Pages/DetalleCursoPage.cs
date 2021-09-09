@@ -14,17 +14,25 @@ namespace CursoApp.Client.Pages
         public int CursoId { get; set; }
 
         [Inject]
-        public iCursosDataService CursoDataService { get; set; }
+        public iEntidadDataService<Cursos> CursoDataService { get; set; }
+        [Inject]
+        public iEntidadDataService<Instructores> InstructoresDataService { get; set; }
+
+        IEnumerable<Cursos> curso;
+        IEnumerable<Instructores> listaInstructores;
 
         protected override async Task OnInitializedAsync()
         {
+            listaInstructores = await InstructoresDataService.GetAllEntidades();
             if (CursoId == 0)
             {
                 // directamente tirar error!
+                
             }
             else
             {
-                Curso = await CursoDataService.GetCursoById(CursoId);
+                Curso = await CursoDataService.GetEntidadById(CursoId);
+               
             }
 
 
@@ -34,12 +42,14 @@ namespace CursoApp.Client.Pages
 
         public async Task handleSubmmit()
         {
-            await CursoDataService.UpdateCurso(Curso);
+            await CursoDataService.UpdateEntidad(Curso);
         }
 
         public void handleInvalidSubmmit()
         {
 
         }
+
+
     }
 }
