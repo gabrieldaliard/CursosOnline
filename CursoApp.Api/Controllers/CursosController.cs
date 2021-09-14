@@ -75,7 +75,7 @@ namespace CursoApp.Api.Controllers
             {
                 if (curso == null)
                     return BadRequest();
-
+                
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 

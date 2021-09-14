@@ -23,9 +23,14 @@ namespace CursoApp.Client.Services
             var cursoJson =
                 new StringContent(JsonSerializer.Serialize(curso), Encoding.UTF8, "application/json");
 
-            await _httpClient.PostAsync("api/Cursos/Add", cursoJson);
+            var response = await _httpClient.PostAsync("api/Cursos/Add", cursoJson);
 
-            return curso;
+            if (response.IsSuccessStatusCode)
+            {
+                return await JsonSerializer.DeserializeAsync<t>(await response.Content.ReadAsStreamAsync());
+            }
+
+            return null;
 
         }
 

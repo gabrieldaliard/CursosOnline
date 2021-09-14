@@ -6,6 +6,8 @@ using CursoApp.Client.Services;
 using CursoApp.Shared.DataBaseModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Radzen;
+
 
 namespace CursoApp.Client.Pages
 {
@@ -31,11 +33,43 @@ namespace CursoApp.Client.Pages
 
         public async Task handleSubmmitAsync(Cursos xCurso)
         {
-            await CursoDataService.AddEntidad(xCurso);
+            var isValid = editContext.Validate();
+
+            if (isValid)
+            {
+                try
+                {
+                    Cursos addedCurso = await CursoDataService.AddEntidad(xCurso);
+
+                    if (addedCurso.idEntidad != 0)
+                    {
+                        ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Success, Summary = "Curso agregado exitosamente.", Detail = "Curso Nro: " + addedCurso.idEntidad + ".", Duration = 8000 });
+                    }
+                    else
+                    {
+                        ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = "Error del proceso.", Detail = "Curso.", Duration = 8000 });
+                    }
+                }
+                catch 
+                {
+                    ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = "Error del proceso.", Detail = "Curso.", Duration = 8000 });
+                }
+                    
+                    
+            }
+
+            
         }
 
         public void handleInvalidSubmmit()
         {
+
+        }
+
+        void ShowNotification(NotificationMessage message)
+        {
+            
+            notificationService.Notify(message);
 
         }
 

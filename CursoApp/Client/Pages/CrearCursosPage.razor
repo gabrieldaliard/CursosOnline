@@ -1,6 +1,6 @@
 ﻿@page "/CrearCursoPage"
 @using CursoApp.Shared.DataBaseModels;
-
+@inject NotificationService notificationService
 
 <RadzenTemplateForm TItem="@Cursos" Data="Curso" Submit="handleSubmmitAsync" InvalidSubmit="handleInvalidSubmmit">
     <div class="row">
