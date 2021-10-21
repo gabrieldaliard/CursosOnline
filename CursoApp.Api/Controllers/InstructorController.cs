@@ -105,7 +105,7 @@ namespace CursoApp.Api.Controllers
                 if (instructorToUpdate == null)
                     return NotFound();
 
-                _instructorRepository.UpdateEntidadModel(xInstructor);
+                _instructorRepository.UpdateEntidadModel(xInstructor, xInstructor.idEntidad);
 
                 return NoContent(); //success
             }

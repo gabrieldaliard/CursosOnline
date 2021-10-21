@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CursoApp.Shared.DataBaseModels
 {
-    public partial class Instructores
+    public partial class Instructores : IEntidad
     {
         public Instructores()
         {

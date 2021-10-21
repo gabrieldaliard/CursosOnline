@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CursoApp.Client.Services;
@@ -14,7 +14,6 @@ namespace CursoApp.Client.Pages
     {
         [Inject]
         public iEntidadDataService<Cursos> CursoDataService { get; set; }
-
         
 
         IEnumerable<Cursos> xCurso;
@@ -26,6 +25,10 @@ namespace CursoApp.Client.Pages
             xCurso = await CursoDataService.GetAllEntidades();
         }
 
+        public void clickFila(CursoApp.Shared.DataBaseModels.Cursos row)
+        {
+            NavManager.NavigateTo("DetalleCursoPage/" + row.idEntidad);
+        }
 
     }
 

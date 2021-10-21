@@ -8,6 +8,6 @@ namespace CursoApp.Shared
 {
     interface IEntidad
     {
-        public int idEntidad { get; set; }
+        int idEntidad { get; set; }
     }
 }

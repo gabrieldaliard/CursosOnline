@@ -66,20 +66,20 @@ namespace CursoApp.Api.Models
             return _appDbContext.Set<t>().Find(xId);            
         }
        
-        public void UpdateEntidadModel(t obj)
+        public void UpdateEntidadModel(t obj, int xId)
         {
             using (_appDbContext)
             {                
-                var foundEntidad = _appDbContext.Find<t>(obj);
-
-                //var currentEntity = dbSetEntity.Find(id);
-                //_dbContext.Entry(currentEntity).CurrentValues.SetValues(newValues);
+                var foundEntidad = _appDbContext.Set<t>().Find(xId);
 
                 if (foundEntidad != null)
                 {
+                    //_appDbContext.Entry(obj).State = EntityState.Modified;
+                    //_appDbContext.Entry(foundEntidad).CurrentValues.SetValues(obj);
+                    //_appDbContext.SaveChanges();
 
-                    _appDbContext.Entry(foundEntidad).CurrentValues.SetValues(obj);
-                    _appDbContext.SaveChanges();
+                _appDbContext.Entry(foundEntidad).CurrentValues.SetValues(obj);
+                _appDbContext.SaveChanges();
                 }                        
             }
         }
