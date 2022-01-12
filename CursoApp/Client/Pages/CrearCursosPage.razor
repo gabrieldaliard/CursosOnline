@@ -2,47 +2,68 @@
 @using CursoApp.Shared.DataBaseModels;
 @inject NotificationService notificationService
 
-<RadzenTemplateForm TItem="@Cursos" Data="Curso" Submit="handleSubmmitAsync" InvalidSubmit="handleInvalidSubmmit">
+
+<RadzenTemplateForm Model="@Curso" TItem="@Cursos" Data="Curso" Submit="handleSubmmitAsync" InvalidSubmit="handleInvalidSubmmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="row">
-        <div class="col-md-6">
-            <div class="col-md-8">
-                <RadzenLabel Text="Titulo:" />
-                <RadzenTextBox @bind-Value="Curso.Titulo" Placeholder="Titulo" style="width: 100%;">
-                </RadzenTextBox>
-            </div>
-            <div class="col-md-8">
-                <RadzenLabel Text="Estudiantes:" />
-                <RadzenNumeric @bind-Value="Curso.Estudiantes" Placeholder="Cant. estudiantes" style="width: 100%;">
-                </RadzenNumeric>
-            </div>
-            <div class="col-md-8">
-                <RadzenLabel Text="Fecha de Creación:" />
-                <RadzenDatePicker @bind-Value="Curso.FechaCreacion" DateFormat="d" Placeholder="Fecha Creación" style="width: 100%;">
-                </RadzenDatePicker>
-            </div>
-            <div class="col-md-8">
-                <RadzenLabel Text="Fecha de Modificación:" />
-                <RadzenDatePicker @bind-Value="Curso.FechaModificacion" DateFormat="d" Placeholder="FechaMod" style="width: 100%;">
-                </RadzenDatePicker>
-            </div>
-            <div class="col-md-8">
-                @*<RadzenDropDown AllowFiltering="true" AllowClear="true" TValue="string" Style="width:300px"
-                    Data=@(Curso.idInstructor) />*@
-                <RadzenDropDown @bind-Value="Curso.idInstructor"
-                                Placeholder="USA"
-                                Data="@listaInstructores"
-                                style="width: 100%;"
-                                TextProperty="Nombre"
-                                ValueProperty="idEntidad"
-                                Name="Instructor">
-                </RadzenDropDown>
-
-
-                <RadzenNumeric @bind-Value="Curso.idInstructor" Placeholder="" style="width: 100%;">
-                </RadzenNumeric>
-            </div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Titulo:" />
+            <RadzenTextBox @bind-Value="Curso.Titulo" Placeholder="Titulo" style="width: 100%;">
+            </RadzenTextBox>
         </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Estado:" />
+            <RadzenSwitch @bind-Value=@Curso.IdEstado />
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Fecha de Creación:" />
+            <RadzenDatePicker @bind-Value="Curso.FechaCreacion" DateFormat="d" Placeholder="Fecha Creación" style="width: 100%;">
+            </RadzenDatePicker>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Instructor:" />
+            <RadzenDropDown @bind-Value="Curso.idInstructor"
+                            Data="@listaInstructores"
+                            style="width: 100%;"
+                            TextProperty="Nombre"
+                            ValueProperty="idEntidad"
+                            Name="Instructor">
+            </RadzenDropDown>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Acerca del Curso:" />
+            <RadzenHtmlEditor>
+
+            </RadzenHtmlEditor>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Objetivos:" />
+            <RadzenTextBox style="width: 100%;">
+            </RadzenTextBox>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Requisitos:" />
+            <RadzenTextBox style="width: 100%;">
+            </RadzenTextBox>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <RadzenLabel Text="Público objetivo:" />
+            <RadzenTextBox style="width: 100%;">
+            </RadzenTextBox>
+        </div>
+        <div class="col-md-4"></div>
+
     </div>
+    <div class="col-md-8"></div>
     <RadzenButton Text="Aceptar" Icon="save" ButtonType="ButtonType.Submit">
 
     </RadzenButton>

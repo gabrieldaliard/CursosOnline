@@ -10,7 +10,7 @@ using CursoApp.Api.Models;
 namespace CursoApp.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/v1.0/[controller]/[action]")]
     public class InstructorController : Controller
     {
         private readonly IEntidadModelRepository<Instructores> _instructorRepository;

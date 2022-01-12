@@ -10,7 +10,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using CursoApp.Api.Models;
 using CursoApp.Shared.DataBaseModels;
-
+using System.Reflection;
+using System.IO;
+using System;
 
 namespace CursoApp.Api
 {
@@ -31,6 +33,12 @@ namespace CursoApp.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CursoApp.Api", Version = "v1" });
+
+                //Esto es para agregar un xml con los datos, comentarios y documantación que ponog.
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+                c.IncludeXmlComments(xmlCommentsFullPath);
             });
                         
 
@@ -50,6 +58,15 @@ namespace CursoApp.Api
             });
 
             services.AddControllers();
+
+            services.AddApiVersioning(c => {
+
+                c.AssumeDefaultVersionWhenUnspecified = true;
+                c.DefaultApiVersion = new ApiVersion(1, 0);
+                c.ReportApiVersions = true;
+                //c.ApiVersionReader = new header
+                }
+            );
 
         }
 

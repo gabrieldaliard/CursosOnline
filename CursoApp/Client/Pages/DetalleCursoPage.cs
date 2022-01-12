@@ -23,8 +23,10 @@ namespace CursoApp.Client.Pages
 
         [Inject]
         NotificationService notificationService { get; set; }
+        [Inject]
+        DialogService dialogService { get; set; }
 
-        IEnumerable<Cursos> curso;
+        //IEnumerable<Cursos> curso;
         IEnumerable<Instructores> listaInstructores;
 
         protected override async Task OnInitializedAsync()
@@ -38,7 +40,8 @@ namespace CursoApp.Client.Pages
             else
             {
                 Curso = await CursoDataService.GetEntidadById(CursoId);
-               
+                dialogService.OnOpen += Open;
+                dialogService.OnClose += Close;
             }
 
 
@@ -56,11 +59,8 @@ namespace CursoApp.Client.Pages
             {
                 ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = "Error al actualizar el Curso.", Detail = "Curso Nro: " + Curso.idEntidad + ".", Duration = 8000 });
             }
-
-
-
-
         }
+
 
         public void handleInvalidSubmmit()
         {
@@ -69,9 +69,27 @@ namespace CursoApp.Client.Pages
 
         void ShowNotification(NotificationMessage message)
         {
-
             notificationService.Notify(message);
+        }
 
+
+        private async Task eliminarCursoAsync()
+        {
+            if ((bool)await dialogService.Confirm("Se eliminará el curso.", "Eliminar", new ConfirmOptions() { OkButtonText = "Aceptar", CancelButtonText = "Cancelar" }))
+            {
+                await CursoDataService.DeleteEntidadById(Curso.idEntidad);
+            }
+            
+        }
+
+        void Open(string title, Type type, Dictionary<string, object> parameters, DialogOptions options)
+        {
+            
+        }
+
+        void Close(dynamic result)
+        {
+            
         }
 
 

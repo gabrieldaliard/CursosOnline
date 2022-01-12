@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -16,6 +17,7 @@ namespace CursoApp.Shared.DataBaseModels
 
         [NotMapped]
         public int idEntidad { get => IdPais; set => IdPais = value; }
+        [Required]
         internal int IdPais { get; set; }
         public string Descripcion { get; set; }
 

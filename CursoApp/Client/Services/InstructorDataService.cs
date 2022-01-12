@@ -21,18 +21,23 @@ namespace CursoApp.Client.Services
         public async Task<t> AddEntidad(t obj)
         {
             return await JsonSerializer.DeserializeAsync<t>
-                (await _httpClient.GetStreamAsync($"Api/Instructor/GetAll"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"Api/v1.0/Instructor/GetAll"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public async Task DeleteEntidadById(int xId)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"api/v1.0/Instructor/DeleteById/{xId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+
+            }
         }
 
         public async Task<IEnumerable<t>> GetAllEntidades()
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<t>>
-                (await _httpClient.GetStreamAsync($"Api/Instructor/GetAll"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"Api/v1.0/Instructor/GetAll"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public async Task<int> GetCantEntidad()
@@ -43,7 +48,7 @@ namespace CursoApp.Client.Services
         public async Task<t> GetEntidadById(int xId)
         {
             return await JsonSerializer.DeserializeAsync<t>
-                (await _httpClient.GetStreamAsync($"Api/Instructor/GetById/{xId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"Api/v1.0/Instructor/GetById/{xId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public async Task UpdateEntidad(t obj)
@@ -51,7 +56,7 @@ namespace CursoApp.Client.Services
             var cursoJson =
                 new StringContent(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
 
-            await _httpClient.PutAsync("api/Instructor/Update", cursoJson);
+            await _httpClient.PutAsync("api/v1.0/Instructor/Update", cursoJson);
         }
     }
 }

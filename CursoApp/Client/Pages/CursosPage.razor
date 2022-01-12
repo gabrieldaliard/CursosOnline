@@ -1,8 +1,9 @@
 ﻿@page "/CursosPage"
 @using CursoApp.Shared.DataBaseModels;
 @inject NavigationManager NavManager
+@implements IDisposable
 
-<RadzenGrid RowClick="@clickFila" AllowPaging="true" Data="@xCurso" TItem="CursoApp.Shared.DataBaseModels.Cursos" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowSorting="true" AllowFiltering="true" PageSize="5" ColumnWidth="50px">
+<RadzenGrid @ref="gridCursos" RowSelect="@clickFila" AllowPaging="true" Data="@xCurso" TItem="CursoApp.Shared.DataBaseModels.Cursos" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowSorting="true" AllowFiltering="true" PageSize="5" ColumnWidth="50px">
     <Columns>
         <RadzenGridColumn TItem="Cursos" Property="Titulo" Title="Nombre Curso" />
         <RadzenGridColumn TItem="Cursos" Property="IdCurso" Title="Curso id" Visible="false" />
@@ -16,6 +17,35 @@
         </RadzenGridColumn>
         <RadzenGridColumn TItem="Cursos" Property="Destacado" Title="Destacado" />
 
+        <RadzenGridColumn TItem="Cursos" Context="curso" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="10px">
+            <Template Context="curso">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Click="@(args => DeleteRowAsync(curso))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+        </RadzenGridColumn>
 
     </Columns>
 </RadzenGrid>
+
+@code{
+
+    RadzenGrid<Cursos> gridCursos;
+
+    public async Task DeleteRowAsync(CursoApp.Shared.DataBaseModels.Cursos curso)
+    {
+        var confirmResult = await dialogService.Confirm("Se eliminará el curso: " + curso.Titulo, "Eliminar", new ConfirmOptions() { OkButtonText = "Aceptar", CancelButtonText = "Cancelar" });
+        if (confirmResult.HasValue && confirmResult.Value)
+        {
+            try
+            {
+                await CursoDataService.DeleteEntidadById(curso.idEntidad);
+                ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Success, Summary = "Curso eliminado exitosamente.", Detail = "Curso Nro: " + curso.idEntidad + ".", Duration = 8000 });
+                await gridCursos.Reload();
+            }
+            catch (Exception ex)
+            {
+                ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = "Error al eliminar el Curso.", Detail = "Curso Nro: " + curso.idEntidad + ".", Duration = 8000 });
+            }
+        }
+    }
+}

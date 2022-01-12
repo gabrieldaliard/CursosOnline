@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -16,7 +17,9 @@ namespace CursoApp.Shared.DataBaseModels
         public int idEntidad { get => IdCurso; set => IdCurso = value; }
 
         internal int IdCurso { get; set; }
+        [Required]
         public string Titulo { get; set; }
+        [Required]
         public int idInstructor { get; set; }
         public DateTime? FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }

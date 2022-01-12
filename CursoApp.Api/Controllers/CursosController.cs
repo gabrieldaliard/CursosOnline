@@ -1,6 +1,7 @@
 ﻿using CursoApp.Api.Models;
 using CursoApp.Shared;
 using CursoApp.Shared.DataBaseModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace CursoApp.Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]/[action]")]
+
+    [ApiController] //-> Con esto no hace falta aclarar "[FromBody]" en los métodos.
+    [Route("api/v1.0/[controller]/[action]")]
+    
     public class CursosController : Controller
     {
         private readonly IEntidadModelRepository<Cursos> _cursoRepository;
@@ -20,8 +23,22 @@ namespace CursoApp.Api.Controllers
             _cursoRepository = CursoRepository;
         }
 
+
+        /// <summary>
+        /// Obtiene todos cursos disponibles.
+        /// </summary>
+        /// <param name="cantFilasPagina"> Cantidad de filas PAPAAAA</param>
+        /// <param name="offSetPagina"></param>
+        /// <param name="orderBy"></param>
+        /// <returns>IActionResult</returns>
+        /// <remarks>
+        /// Ejemplo de Request \
+        /// </remarks>
         [HttpGet]
-        //[Route("Api/[controller]")] --> lo que sea que este antes de la palabara controller.
+        //[ApiVersion("2.0")]
+        //[ApiVersion("1.0")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Cursos))]
         public IActionResult GetAll(int cantFilasPagina = 0, int offSetPagina = 0, string orderBy = "")
         {
             try
@@ -60,7 +77,7 @@ namespace CursoApp.Api.Controllers
                     return NotFound();
 
                 _cursoRepository.DeleteEntidadModelById(xId);
-                return NoContent();//success
+                return Ok();//success
             }
             catch (Exception ex)
             {
@@ -74,7 +91,7 @@ namespace CursoApp.Api.Controllers
             try
             {
                 if (curso == null)
-                    return BadRequest();
+                    return NotFound();
                 
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
@@ -87,6 +104,7 @@ namespace CursoApp.Api.Controllers
             {
                 return StatusCode(500, "Internal server error");
             }
+            
         }
 
 

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
 
 
+
 namespace CursoApp.Client.Pages
 {
     public partial class CrearCursosPage
@@ -63,7 +64,7 @@ namespace CursoApp.Client.Pages
 
         public void handleInvalidSubmmit()
         {
-
+            ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = "Validacion!!!.", Detail = "Curso.", Duration = 8000 });
         }
 
         void ShowNotification(NotificationMessage message)
@@ -72,6 +73,8 @@ namespace CursoApp.Client.Pages
             notificationService.Notify(message);
 
         }
+
+
 
     }
 }

@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-8">
                 @*<RadzenDropDown AllowFiltering="true" AllowClear="true" TValue="string" Style="width:300px"
-        Data=@(Curso.idInstructor) />*@
+                    Data=@(Curso.idInstructor) />*@
                 <RadzenDropDown @bind-Value="Curso.idInstructor"
                                 Data="@listaInstructores"
                                 style="width: 100%;"
@@ -43,7 +43,8 @@
             </div>
         </div>
     </div>
-    <RadzenButton Text="Aceptar" Icon="save" ButtonType="ButtonType.Submit">
-
+    <RadzenButton Text="Aceptar" Icon="save" formaction="SaveForm" ButtonType="ButtonType.Submit" >
     </RadzenButton>
+
+
 </RadzenTemplateForm>

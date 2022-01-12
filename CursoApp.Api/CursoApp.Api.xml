@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CursoApp.Api</name>
+    </assembly>
+    <members>
+        <member name="M:CursoApp.Api.Controllers.CursosController.GetAll(System.Int32,System.Int32,System.String)">
+            <summary>
+            Obtiene todos cursos disponibles.
+            </summary>
+            <param name="cantFilasPagina"> Cantidad de filas PAPAAAA</param>
+            <param name="offSetPagina"></param>
+            <param name="orderBy"></param>
+            <returns>IActionResult</returns>
+            <remarks>
+            Ejemplo de Request \
+            </remarks>
+        </member>
+    </members>
+</doc>
