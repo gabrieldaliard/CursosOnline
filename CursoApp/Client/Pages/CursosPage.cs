@@ -21,7 +21,7 @@ namespace CursoApp.Client.Pages
 
         IEnumerable<Cursos> xCurso;
 
-        
+         
 
         protected override async Task OnInitializedAsync()
         {            
