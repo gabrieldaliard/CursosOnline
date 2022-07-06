@@ -18,14 +18,18 @@ namespace CursoApp.Client.Pages
         DialogService dialogService { get; set; }
         [Inject]
         NotificationService notificationService { get; set; }
+        [Inject]
+        public iEntidadDataService<Estados> EstadosDataService { get; set; }
 
         IEnumerable<Cursos> xCurso;
+        IEnumerable<Estados> listaEstados;
 
-         
 
         protected override async Task OnInitializedAsync()
         {            
             xCurso = await CursoDataService.GetAllEntidades();
+            listaEstados = await EstadosDataService.GetAllEntidades();
+
             dialogService.OnOpen += Open;
             dialogService.OnClose += Close;
         }
@@ -74,6 +78,9 @@ namespace CursoApp.Client.Pages
         {
             notificationService.Notify(message);
         }
+
+
+
 
 
     }

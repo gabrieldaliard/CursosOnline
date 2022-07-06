@@ -12,11 +12,23 @@
             <RadzenTextBox @bind-Value="Curso.Titulo" Placeholder="Titulo" style="width: 100%;">
             </RadzenTextBox>
         </div>
-        <div class="col-md-4"></div>
+@*        <div class="col-md-4"></div>
         <div class="col-md-4">
             <RadzenLabel Text="Estado:" />
-            <RadzenSwitch @bind-Value=@Curso.IdEstado />
+            <RadzenSwitch @bind-Value=Curso.IdEstado />
+        </div>*@
+
+                <div class="col-md-4">
+            <RadzenLabel Text="Estado:" />
+            <RadzenDropDown @bind-Value="Curso.IdEstado"
+                            Data="@listaEstados"
+                            style="width: 100%;"
+                            TextProperty="Descripcion"
+                            ValueProperty="idEntidad"
+                            Name="Estado">
+            </RadzenDropDown>
         </div>
+
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <RadzenLabel Text="Fecha de Creación:" />

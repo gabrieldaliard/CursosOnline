@@ -52,7 +52,7 @@ namespace CursoApp.Api.Models
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener los datos de los cursos.");
+                throw new Exception("Error al obtener los datos de las entidades.");
             }
         }
 

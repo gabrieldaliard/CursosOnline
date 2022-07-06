@@ -51,6 +51,7 @@ namespace CursoApp.Api
             services.AddScoped<IEntidadModelRepository<Instructores>, EntidadModelRepository<Instructores>>();
             services.AddScoped<IEntidadModelRepository<Paises>, EntidadModelRepository<Paises>>();
             services.AddScoped<IEntidadModelRepository<Usuarios>, EntidadModelRepository<Usuarios>>();
+            services.AddScoped<IEntidadModelRepository<Estados>, EntidadModelRepository<Estados>>();
 
             services.AddCors(options =>
             {
