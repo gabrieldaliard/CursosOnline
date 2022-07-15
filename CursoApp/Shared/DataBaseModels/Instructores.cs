@@ -23,7 +23,7 @@ namespace CursoApp.Shared.DataBaseModels
         [Required]
         public string Nombre { get; set; }
         public string Apellido { get; set; }
-        public string Descripción { get; set; }
+        public string Descripcion { get; set; }
         [Required]
         public int IdPais { get; set; }
 

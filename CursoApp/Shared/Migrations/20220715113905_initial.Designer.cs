@@ -7,44 +7,56 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace CursoApp.Shared.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220701030840_initial")]
+    [Migration("20220715113905_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Cursos", b =>
                 {
                     b.Property<int>("IdCurso")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCurso"), 1L, 1);
 
                     b.Property<bool>("Destacado")
                         .HasColumnType("bit");
 
                     b.Property<int?>("Estudiantes")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("((0))");
 
                     b.Property<DateTime?>("FechaCreacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<DateTime?>("FechaModificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<bool>("IdEstado")
-                        .HasColumnType("bit");
+                    b.Property<int>("IdEstado")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Interesados")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("((0))");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -54,22 +66,22 @@ namespace CursoApp.Shared.Migrations
                     b.Property<int>("idInstructor")
                         .HasColumnType("int");
 
-                    b.Property<int?>("idInstructorNavigationIdInstructor")
-                        .HasColumnType("int");
-
                     b.HasKey("IdCurso");
 
-                    b.HasIndex("idInstructorNavigationIdInstructor");
+                    b.HasIndex("IdEstado");
 
-                    b.ToTable("Cursos");
+                    b.HasIndex("idInstructor");
+
+                    b.ToTable("Cursos", (string)null);
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Estados", b =>
                 {
                     b.Property<int>("IdEstado")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstado"), 1L, 1);
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -79,14 +91,42 @@ namespace CursoApp.Shared.Migrations
                     b.HasKey("IdEstado");
 
                     b.ToTable("Estados");
+
+                    b.HasData(
+                        new
+                        {
+                            IdEstado = 1,
+                            Descripcion = "Nuevo"
+                        },
+                        new
+                        {
+                            IdEstado = 2,
+                            Descripcion = "Activo"
+                        },
+                        new
+                        {
+                            IdEstado = 3,
+                            Descripcion = "Inactivo"
+                        },
+                        new
+                        {
+                            IdEstado = 4,
+                            Descripcion = "Suspendido"
+                        },
+                        new
+                        {
+                            IdEstado = 5,
+                            Descripcion = "Baja"
+                        });
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.InfoAcademia", b =>
                 {
                     b.Property<int>("IdAcademia")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAcademia"), 1L, 1);
 
                     b.HasKey("IdAcademia");
 
@@ -97,13 +137,14 @@ namespace CursoApp.Shared.Migrations
                 {
                     b.Property<int>("IdInstructor")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdInstructor"), 1L, 1);
 
                     b.Property<string>("Apellido")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Descripción")
+                    b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdPais")
@@ -121,14 +162,33 @@ namespace CursoApp.Shared.Migrations
                     b.HasIndex("IdPaisNavigationIdPais");
 
                     b.ToTable("Instructores");
+
+                    b.HasData(
+                        new
+                        {
+                            IdInstructor = 1,
+                            Apellido = "Diaz",
+                            Descripcion = "Florcita",
+                            IdPais = 1,
+                            Nombre = "Florencia"
+                        },
+                        new
+                        {
+                            IdInstructor = 2,
+                            Apellido = "Dummy",
+                            Descripcion = "DescripcionDummy",
+                            IdPais = 6,
+                            Nombre = "Test"
+                        });
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Paises", b =>
                 {
                     b.Property<int>("IdPais")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPais"), 1L, 1);
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
@@ -138,6 +198,11 @@ namespace CursoApp.Shared.Migrations
                     b.ToTable("Paises");
 
                     b.HasData(
+                        new
+                        {
+                            IdPais = 1,
+                            Descripcion = "Argentina"
+                        },
                         new
                         {
                             IdPais = 2,
@@ -184,8 +249,9 @@ namespace CursoApp.Shared.Migrations
                 {
                     b.Property<int>("IdPregunta")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPregunta"), 1L, 1);
 
                     b.Property<string>("Pregunta")
                         .IsRequired()
@@ -204,8 +270,9 @@ namespace CursoApp.Shared.Migrations
                 {
                     b.Property<int>("IdUsuario")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"), 1L, 1);
 
                     b.Property<string>("Apellido")
                         .HasColumnType("nvarchar(max)");
@@ -218,7 +285,9 @@ namespace CursoApp.Shared.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("FechaInscripcion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("IdPais")
                         .IsRequired()
@@ -232,7 +301,9 @@ namespace CursoApp.Shared.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UltimoAcceso")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.HasKey("IdUsuario");
 
@@ -245,8 +316,9 @@ namespace CursoApp.Shared.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("IdCurso")
                         .HasColumnType("int");
@@ -271,11 +343,21 @@ namespace CursoApp.Shared.Migrations
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Cursos", b =>
                 {
-                    b.HasOne("CursoApp.Shared.DataBaseModels.Instructores", "idInstructorNavigation")
-                        .WithMany("Cursos")
-                        .HasForeignKey("idInstructorNavigationIdInstructor");
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Estados", "Estados")
+                        .WithMany()
+                        .HasForeignKey("IdEstado")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("idInstructorNavigation");
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Instructores", "Instructores")
+                        .WithMany("Cursos")
+                        .HasForeignKey("idInstructor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estados");
+
+                    b.Navigation("Instructores");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Instructores", b =>

@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace CursoApp.Shared.Migrations
 {
     public partial class initial : Migration
@@ -67,7 +69,7 @@ namespace CursoApp.Shared.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Descripción = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdPais = table.Column<int>(type: "int", nullable: false),
                     IdPaisNavigationIdPais = table.Column<int>(type: "int", nullable: true)
                 },
@@ -78,8 +80,7 @@ namespace CursoApp.Shared.Migrations
                         name: "FK_Instructores_Paises_IdPaisNavigationIdPais",
                         column: x => x.IdPaisNavigationIdPais,
                         principalTable: "Paises",
-                        principalColumn: "IdPais",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "IdPais");
                 });
 
             migrationBuilder.CreateTable(
@@ -89,8 +90,8 @@ namespace CursoApp.Shared.Migrations
                     IdUsuario = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaInscripcion = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UltimoAcceso = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FechaInscripcion = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
+                    UltimoAcceso = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdPais = table.Column<int>(type: "int", nullable: false),
@@ -104,8 +105,7 @@ namespace CursoApp.Shared.Migrations
                         name: "FK_Usuarios_Paises_IdPaisNavigationIdPais",
                         column: x => x.IdPaisNavigationIdPais,
                         principalTable: "Paises",
-                        principalColumn: "IdPais",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "IdPais");
                 });
 
             migrationBuilder.CreateTable(
@@ -115,24 +115,29 @@ namespace CursoApp.Shared.Migrations
                     IdCurso = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titulo = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
-                    idInstructor = table.Column<int>(type: "int", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FechaModificacion = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Interesados = table.Column<int>(type: "int", nullable: true),
-                    Estudiantes = table.Column<int>(type: "int", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
+                    Interesados = table.Column<int>(type: "int", nullable: true, defaultValueSql: "((0))"),
+                    Estudiantes = table.Column<int>(type: "int", nullable: true, defaultValueSql: "((0))"),
                     Destacado = table.Column<bool>(type: "bit", nullable: false),
-                    IdEstado = table.Column<bool>(type: "bit", nullable: false),
-                    idInstructorNavigationIdInstructor = table.Column<int>(type: "int", nullable: true)
+                    IdEstado = table.Column<int>(type: "int", nullable: false),
+                    idInstructor = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cursos", x => x.IdCurso);
                     table.ForeignKey(
-                        name: "FK_Cursos_Instructores_idInstructorNavigationIdInstructor",
-                        column: x => x.idInstructorNavigationIdInstructor,
+                        name: "FK_Cursos_Estados_IdEstado",
+                        column: x => x.IdEstado,
+                        principalTable: "Estados",
+                        principalColumn: "IdEstado",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Cursos_Instructores_idInstructor",
+                        column: x => x.idInstructor,
                         principalTable: "Instructores",
                         principalColumn: "IdInstructor",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,14 +158,33 @@ namespace CursoApp.Shared.Migrations
                         name: "FK_UsuariosCursos_Cursos_IdCursoNavigationIdCurso",
                         column: x => x.IdCursoNavigationIdCurso,
                         principalTable: "Cursos",
-                        principalColumn: "IdCurso",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "IdCurso");
                     table.ForeignKey(
                         name: "FK_UsuariosCursos_Usuarios_IdUsuarioNavigationIdUsuario",
                         column: x => x.IdUsuarioNavigationIdUsuario,
                         principalTable: "Usuarios",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "IdUsuario");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Estados",
+                columns: new[] { "IdEstado", "Descripcion" },
+                values: new object[,]
+                {
+                    { 1, "Nuevo" },
+                    { 2, "Activo" },
+                    { 3, "Inactivo" },
+                    { 4, "Suspendido" },
+                    { 5, "Baja" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Instructores",
+                columns: new[] { "IdInstructor", "Apellido", "Descripcion", "IdPais", "IdPaisNavigationIdPais", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Diaz", "Florcita", 1, null, "Florencia" },
+                    { 2, "Dummy", "DescripcionDummy", 6, null, "Test" }
                 });
 
             migrationBuilder.InsertData(
@@ -168,6 +192,7 @@ namespace CursoApp.Shared.Migrations
                 columns: new[] { "IdPais", "Descripcion" },
                 values: new object[,]
                 {
+                    { 1, "Argentina" },
                     { 2, "Germany" },
                     { 3, "Netherlands" },
                     { 4, "USA" },
@@ -179,9 +204,14 @@ namespace CursoApp.Shared.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cursos_idInstructorNavigationIdInstructor",
+                name: "IX_Cursos_IdEstado",
                 table: "Cursos",
-                column: "idInstructorNavigationIdInstructor");
+                column: "IdEstado");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cursos_idInstructor",
+                table: "Cursos",
+                column: "idInstructor");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Instructores_IdPaisNavigationIdPais",
@@ -207,9 +237,6 @@ namespace CursoApp.Shared.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Estados");
-
-            migrationBuilder.DropTable(
                 name: "InfoAcademia");
 
             migrationBuilder.DropTable(
@@ -223,6 +250,9 @@ namespace CursoApp.Shared.Migrations
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Estados");
 
             migrationBuilder.DropTable(
                 name: "Instructores");

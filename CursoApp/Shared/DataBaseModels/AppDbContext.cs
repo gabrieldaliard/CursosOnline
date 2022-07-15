@@ -43,8 +43,15 @@ namespace CursoApp.Shared.DataBaseModels
             base.OnModelCreating(modelBuilder);
             //modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 
+
             modelBuilder.Entity<Cursos>(entity =>
             {
+
+                //entity.HasOne(d => d.IdEstadoNavigation)
+                //    .WithOne(p => p.Cursos)
+                //    .HasForeignKey(d => d.IdEstado)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Cursos_Estados");
 
                 entity.Property(e => e.Estudiantes).HasDefaultValueSql("((0))");
 
@@ -56,7 +63,7 @@ namespace CursoApp.Shared.DataBaseModels
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.IdEstado).HasDefaultValueSql("((1))");
+                //entity.Property(e => e.IdEstado).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Interesados).HasDefaultValueSql("((0))");
 
@@ -83,6 +90,12 @@ namespace CursoApp.Shared.DataBaseModels
                 modelBuilder.Entity<Estados>().HasData(new Estados { IdEstado = 3, Descripcion = "Inactivo" });
                 modelBuilder.Entity<Estados>().HasData(new Estados { IdEstado = 4, Descripcion = "Suspendido" });
                 modelBuilder.Entity<Estados>().HasData(new Estados { IdEstado = 5, Descripcion = "Baja" });
+            });
+
+            modelBuilder.Entity<Instructores>(entity =>
+            {
+                modelBuilder.Entity<Instructores>().HasData(new Instructores { IdInstructor = 1, Nombre = "Florencia", Apellido = "Diaz", IdPais = 1, Descripcion = "Florcita" });
+                modelBuilder.Entity<Instructores>().HasData(new Instructores { IdInstructor = 2, Nombre = "Test", Apellido = "Dummy", IdPais = 6, Descripcion = "DescripcionDummy" });
             });
 
             //seed categories

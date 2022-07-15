@@ -10,6 +10,10 @@ namespace CursoApp.Shared.DataBaseModels
 {
     public class Estados
     {
+        public Estados()
+        {
+
+        }
 
         [NotMapped]
         public int idEntidad { get => IdEstado; set => IdEstado = value; }
@@ -23,7 +27,6 @@ namespace CursoApp.Shared.DataBaseModels
         [MaxLength(70)]
         [Required]
         public string Descripcion { get; set; }
-
 
     }
 }
