@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -11,6 +12,7 @@ namespace CursoApp.Shared.DataBaseModels
         [NotMapped]
         public int idEntidad { get => IdAcademia; set => IdAcademia = value; }
 
-        internal int IdAcademia { get; set; }
+        [Key]
+        public int IdAcademia { get; set; }
     }
 }

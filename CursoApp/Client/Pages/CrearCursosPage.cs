@@ -18,15 +18,19 @@ namespace CursoApp.Client.Pages
         public iEntidadDataService<Cursos> CursoDataService { get; set; }
         [Inject]
         public iEntidadDataService<Instructores> InstructoresDataService { get; set; }
+        [Inject]
+        public iEntidadDataService<Estados> EstadosDataService { get; set; }
 
         public Cursos Curso { get; set; } = new Cursos();
 
         IEnumerable<Instructores> listaInstructores;
+        IEnumerable<Estados> listaEstados;
         private EditContext editContext;
 
         protected override async Task OnInitializedAsync()
         {
             listaInstructores = await InstructoresDataService.GetAllEntidades();
+            listaEstados = await EstadosDataService.GetAllEntidades();
 
             editContext = new EditContext(Curso);
         }

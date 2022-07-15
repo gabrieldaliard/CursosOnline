@@ -16,7 +16,10 @@ namespace CursoApp.Shared.DataBaseModels
 
         [NotMapped]
         public int idEntidad { get => IdUsuario; set => IdUsuario = value; }
-        internal int IdUsuario { get; set; }
+
+        [Key]
+        public int IdUsuario { get; set; }
+
         [Required]
         public string Email { get; set; }
         public DateTime? FechaInscripcion { get; set; }

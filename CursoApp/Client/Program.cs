@@ -25,7 +25,8 @@ namespace CursoApp.Client
 
             builder.Services.AddHttpClient<iEntidadDataService<Cursos>, CursosDataService<Cursos>>(client => client.BaseAddress = new Uri("https://localhost:44341/"));
             builder.Services.AddHttpClient<iEntidadDataService<Instructores>, InstructorDataService<Instructores>>(client => client.BaseAddress = new Uri("https://localhost:44341/"));
-            
+            builder.Services.AddHttpClient<iEntidadDataService<Estados>, EstadoDataService<Estados>>(client => client.BaseAddress = new Uri("https://localhost:44341/"));
+
             builder.Services.AddScoped<NotificationService>();
             builder.Services.AddSingleton<DialogService>();
 

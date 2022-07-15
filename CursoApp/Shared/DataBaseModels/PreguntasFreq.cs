@@ -11,7 +11,9 @@ namespace CursoApp.Shared.DataBaseModels
     {
         [NotMapped]
         public int idEntidad { get => IdPregunta; set => IdPregunta = value; }
-        internal int IdPregunta { get; set; }
+
+        [Key]
+        public int IdPregunta { get; set; }
         [Required]
         public string Pregunta { get; set; }
         [Required]

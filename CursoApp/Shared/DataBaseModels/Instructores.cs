@@ -17,11 +17,13 @@ namespace CursoApp.Shared.DataBaseModels
         [NotMapped]
         public int idEntidad { get => IdInstructor; set => IdInstructor = value; }
 
-        internal int IdInstructor { get; set; }
+        [Key]
+        public int IdInstructor { get; set; } 
+
         [Required]
         public string Nombre { get; set; }
         public string Apellido { get; set; }
-        public string Descripción { get; set; }
+        public string Descripcion { get; set; }
         [Required]
         public int IdPais { get; set; }
 

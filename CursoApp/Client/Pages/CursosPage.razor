@@ -11,9 +11,15 @@
         <RadzenGridColumn TItem="Cursos" Property="Interesados" Title="Interesados" />
         <RadzenGridColumn TItem="Cursos" Property="Estudiantes" Title="Estudiantes" />
         <RadzenGridColumn TItem="Cursos" Property="IdEstado" Title="Estado">
-            <Template Context="data">
-                <RadzenSwitch @bind-Value=@data.IdEstado />
-            </Template>
+@*            <Template Context="data">            
+                <RadzenDropDown @bind-Value="xCurso.IdEstado"
+                                Data="@listaEstados"
+                                style="width: 100%;"
+                                TextProperty="Descripcion"
+                                ValueProperty="idEntidad"
+                                Name="Estado">
+                </RadzenDropDown>
+            </Template>*@
         </RadzenGridColumn>
         <RadzenGridColumn TItem="Cursos" Property="Destacado" Title="Destacado" />
 
