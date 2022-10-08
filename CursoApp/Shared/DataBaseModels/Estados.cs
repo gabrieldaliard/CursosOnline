@@ -20,13 +20,26 @@ namespace CursoApp.Shared.DataBaseModels
 
         [Key]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdEstado { get; set; }
 
 
         [MaxLength(70)]
         [Required]
         public string Descripcion { get; set; }
+
+        [Required]
+        public int IdCurso { get; set; }
+        public virtual ICollection<Cursos> Cursos { get; set; }
+
+        [Required]
+        public int IdInstructor { get; set; }
+        public virtual ICollection<Instructores> Instructores { get; set; }
+
+        [Required]
+        public int IdUsuario { get; set; }
+        public virtual ICollection<Usuarios> Usuarios { get; set; }
+
 
     }
 }

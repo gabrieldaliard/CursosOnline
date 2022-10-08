@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CursoApp.Shared.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220715113905_initial")]
+    [Migration("20221004014632_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,8 @@ namespace CursoApp.Shared.Migrations
 
                     b.HasKey("IdCurso");
 
-                    b.HasIndex("IdEstado");
+                    b.HasIndex("IdEstado")
+                        .IsUnique();
 
                     b.HasIndex("idInstructor");
 
@@ -88,6 +89,9 @@ namespace CursoApp.Shared.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
+                    b.Property<int>("IdCurso")
+                        .HasColumnType("int");
+
                     b.HasKey("IdEstado");
 
                     b.ToTable("Estados");
@@ -96,27 +100,32 @@ namespace CursoApp.Shared.Migrations
                         new
                         {
                             IdEstado = 1,
-                            Descripcion = "Nuevo"
+                            Descripcion = "Nuevo",
+                            IdCurso = 0
                         },
                         new
                         {
                             IdEstado = 2,
-                            Descripcion = "Activo"
+                            Descripcion = "Activo",
+                            IdCurso = 0
                         },
                         new
                         {
                             IdEstado = 3,
-                            Descripcion = "Inactivo"
+                            Descripcion = "Inactivo",
+                            IdCurso = 0
                         },
                         new
                         {
                             IdEstado = 4,
-                            Descripcion = "Suspendido"
+                            Descripcion = "Suspendido",
+                            IdCurso = 0
                         },
                         new
                         {
                             IdEstado = 5,
-                            Descripcion = "Baja"
+                            Descripcion = "Baja",
+                            IdCurso = 0
                         });
                 });
 
@@ -150,16 +159,16 @@ namespace CursoApp.Shared.Migrations
                     b.Property<int>("IdPais")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdPaisNavigationIdPais")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PaisesIdPais")
+                        .HasColumnType("int");
+
                     b.HasKey("IdInstructor");
 
-                    b.HasIndex("IdPaisNavigationIdPais");
+                    b.HasIndex("PaisesIdPais");
 
                     b.ToTable("Instructores");
 
@@ -175,10 +184,26 @@ namespace CursoApp.Shared.Migrations
                         new
                         {
                             IdInstructor = 2,
-                            Apellido = "Dummy",
-                            Descripcion = "DescripcionDummy",
-                            IdPais = 6,
-                            Nombre = "Test"
+                            Apellido = "DummyApellido1",
+                            Descripcion = "DummyDescripcion1",
+                            IdPais = 1,
+                            Nombre = "DummyNombre1"
+                        },
+                        new
+                        {
+                            IdInstructor = 3,
+                            Apellido = "DummyApellido2",
+                            Descripcion = "DummyDescripcion2",
+                            IdPais = 2,
+                            Nombre = "DummyNombre2"
+                        },
+                        new
+                        {
+                            IdInstructor = 4,
+                            Apellido = "DummyApellido3",
+                            Descripcion = "DummyDescripcion3",
+                            IdPais = 0,
+                            Nombre = "DummyNombre3"
                         });
                 });
 
@@ -289,16 +314,15 @@ namespace CursoApp.Shared.Migrations
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int?>("IdPais")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdPaisNavigationIdPais")
+                    b.Property<int>("IdPais")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PaisesIdPais")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UltimoAcceso")
                         .ValueGeneratedOnAdd()
@@ -307,9 +331,26 @@ namespace CursoApp.Shared.Migrations
 
                     b.HasKey("IdUsuario");
 
-                    b.HasIndex("IdPaisNavigationIdPais");
+                    b.HasIndex("PaisesIdPais");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            IdUsuario = 1,
+                            Apellido = "DummyApellido1",
+                            Email = "DummyNombre1.DummyApellido1@false.com.ar",
+                            IdPais = 1,
+                            Nombre = "DummyNombre1"
+                        },
+                        new
+                        {
+                            IdUsuario = 2,
+                            Email = "DummyNombre1@false.com.ar",
+                            IdPais = 1,
+                            Nombre = "DummyNombre2"
+                        });
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.UsuariosCursos", b =>
@@ -344,8 +385,8 @@ namespace CursoApp.Shared.Migrations
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Cursos", b =>
                 {
                     b.HasOne("CursoApp.Shared.DataBaseModels.Estados", "Estados")
-                        .WithMany()
-                        .HasForeignKey("IdEstado")
+                        .WithOne("Cursos")
+                        .HasForeignKey("CursoApp.Shared.DataBaseModels.Cursos", "IdEstado")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -362,20 +403,20 @@ namespace CursoApp.Shared.Migrations
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Instructores", b =>
                 {
-                    b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "IdPaisNavigation")
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
                         .WithMany("Instructores")
-                        .HasForeignKey("IdPaisNavigationIdPais");
+                        .HasForeignKey("PaisesIdPais");
 
-                    b.Navigation("IdPaisNavigation");
+                    b.Navigation("Paises");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Usuarios", b =>
                 {
-                    b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "IdPaisNavigation")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("IdPaisNavigationIdPais");
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
+                        .WithMany()
+                        .HasForeignKey("PaisesIdPais");
 
-                    b.Navigation("IdPaisNavigation");
+                    b.Navigation("Paises");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.UsuariosCursos", b =>
@@ -398,6 +439,11 @@ namespace CursoApp.Shared.Migrations
                     b.Navigation("UsuariosCursos");
                 });
 
+            modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Estados", b =>
+                {
+                    b.Navigation("Cursos");
+                });
+
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Instructores", b =>
                 {
                     b.Navigation("Cursos");
@@ -406,8 +452,6 @@ namespace CursoApp.Shared.Migrations
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Paises", b =>
                 {
                     b.Navigation("Instructores");
-
-                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Usuarios", b =>

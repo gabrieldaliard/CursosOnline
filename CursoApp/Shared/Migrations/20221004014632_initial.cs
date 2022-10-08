@@ -15,7 +15,8 @@ namespace CursoApp.Shared.Migrations
                 {
                     IdEstado = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false)
+                    Descripcion = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    IdCurso = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,14 +72,14 @@ namespace CursoApp.Shared.Migrations
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdPais = table.Column<int>(type: "int", nullable: false),
-                    IdPaisNavigationIdPais = table.Column<int>(type: "int", nullable: true)
+                    PaisesIdPais = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Instructores", x => x.IdInstructor);
                     table.ForeignKey(
-                        name: "FK_Instructores_Paises_IdPaisNavigationIdPais",
-                        column: x => x.IdPaisNavigationIdPais,
+                        name: "FK_Instructores_Paises_PaisesIdPais",
+                        column: x => x.PaisesIdPais,
                         principalTable: "Paises",
                         principalColumn: "IdPais");
                 });
@@ -96,14 +97,14 @@ namespace CursoApp.Shared.Migrations
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdPais = table.Column<int>(type: "int", nullable: false),
                     Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdPaisNavigationIdPais = table.Column<int>(type: "int", nullable: true)
+                    PaisesIdPais = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
                     table.ForeignKey(
-                        name: "FK_Usuarios_Paises_IdPaisNavigationIdPais",
-                        column: x => x.IdPaisNavigationIdPais,
+                        name: "FK_Usuarios_Paises_PaisesIdPais",
+                        column: x => x.PaisesIdPais,
                         principalTable: "Paises",
                         principalColumn: "IdPais");
                 });
@@ -120,8 +121,8 @@ namespace CursoApp.Shared.Migrations
                     Interesados = table.Column<int>(type: "int", nullable: true, defaultValueSql: "((0))"),
                     Estudiantes = table.Column<int>(type: "int", nullable: true, defaultValueSql: "((0))"),
                     Destacado = table.Column<bool>(type: "bit", nullable: false),
-                    IdEstado = table.Column<int>(type: "int", nullable: false),
-                    idInstructor = table.Column<int>(type: "int", nullable: false)
+                    idInstructor = table.Column<int>(type: "int", nullable: false),
+                    IdEstado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,23 +169,25 @@ namespace CursoApp.Shared.Migrations
 
             migrationBuilder.InsertData(
                 table: "Estados",
-                columns: new[] { "IdEstado", "Descripcion" },
+                columns: new[] { "IdEstado", "Descripcion", "IdCurso" },
                 values: new object[,]
                 {
-                    { 1, "Nuevo" },
-                    { 2, "Activo" },
-                    { 3, "Inactivo" },
-                    { 4, "Suspendido" },
-                    { 5, "Baja" }
+                    { 1, "Nuevo", 0 },
+                    { 2, "Activo", 0 },
+                    { 3, "Inactivo", 0 },
+                    { 4, "Suspendido", 0 },
+                    { 5, "Baja", 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Instructores",
-                columns: new[] { "IdInstructor", "Apellido", "Descripcion", "IdPais", "IdPaisNavigationIdPais", "Nombre" },
+                columns: new[] { "IdInstructor", "Apellido", "Descripcion", "IdPais", "Nombre", "PaisesIdPais" },
                 values: new object[,]
                 {
-                    { 1, "Diaz", "Florcita", 1, null, "Florencia" },
-                    { 2, "Dummy", "DescripcionDummy", 6, null, "Test" }
+                    { 1, "Diaz", "Florcita", 1, "Florencia", null },
+                    { 2, "DummyApellido1", "DummyDescripcion1", 1, "DummyNombre1", null },
+                    { 3, "DummyApellido2", "DummyDescripcion2", 2, "DummyNombre2", null },
+                    { 4, "DummyApellido3", "DummyDescripcion3", 0, "DummyNombre3", null }
                 });
 
             migrationBuilder.InsertData(
@@ -203,10 +206,20 @@ namespace CursoApp.Shared.Migrations
                     { 9, "Brazil" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "IdUsuario", "Apellido", "Contraseña", "Email", "IdPais", "Nombre", "PaisesIdPais" },
+                values: new object[,]
+                {
+                    { 1, "DummyApellido1", null, "DummyNombre1.DummyApellido1@false.com.ar", 1, "DummyNombre1", null },
+                    { 2, null, null, "DummyNombre1@false.com.ar", 1, "DummyNombre2", null }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Cursos_IdEstado",
                 table: "Cursos",
-                column: "IdEstado");
+                column: "IdEstado",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cursos_idInstructor",
@@ -214,14 +227,14 @@ namespace CursoApp.Shared.Migrations
                 column: "idInstructor");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Instructores_IdPaisNavigationIdPais",
+                name: "IX_Instructores_PaisesIdPais",
                 table: "Instructores",
-                column: "IdPaisNavigationIdPais");
+                column: "PaisesIdPais");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_IdPaisNavigationIdPais",
+                name: "IX_Usuarios_PaisesIdPais",
                 table: "Usuarios",
-                column: "IdPaisNavigationIdPais");
+                column: "PaisesIdPais");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsuariosCursos_IdCursoNavigationIdCurso",

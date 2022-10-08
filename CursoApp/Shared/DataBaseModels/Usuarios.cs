@@ -27,11 +27,15 @@ namespace CursoApp.Shared.DataBaseModels
         [Required]
         public string Nombre { get; set; }
         public string Apellido { get; set; }
+
+        [ForeignKey("IdPais")]
         [Required]
-        public int? IdPais { get; set; }
+        public int IdPais { get; set; }
+
+        
         public string Contraseña { get; set; }
 
-        public virtual Paises IdPaisNavigation { get; set; }
+        public virtual Paises Paises { get; set; }
         public virtual ICollection<UsuariosCursos> UsuariosCursos { get; set; }
     }
 }
