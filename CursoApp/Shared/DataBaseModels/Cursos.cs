@@ -11,15 +11,16 @@ namespace CursoApp.Shared.DataBaseModels
     {
         public Cursos()
         {
-            UsuariosCursos = new HashSet<UsuariosCursos>();
+            //UsuariosCursos = new HashSet<UsuariosCursos>();
 
         }
 
-        public Cursos(int xIdCurso, string xTitulo)
+        public Cursos(int xIdCurso, string xTitulo, int xIdInstructor, int xIdEstado)
         {
             IdCurso = xIdCurso;
             Titulo = xTitulo;
-
+            idInstructor = xIdInstructor;
+            IdEstado = xIdEstado;
         }
 
         [NotMapped]
@@ -52,7 +53,8 @@ namespace CursoApp.Shared.DataBaseModels
         public int IdEstado { get; set; }
         public Estados Estados { get; set; } //Indica que estamos haciendo referencia a una tabla externa
 
-        public virtual ICollection<UsuariosCursos> UsuariosCursos { get; set; }
-        
+        public int idUsuario { get; set; }
+        public ICollection<Usuarios> Usuarios { get; set; }
+
     }
 }

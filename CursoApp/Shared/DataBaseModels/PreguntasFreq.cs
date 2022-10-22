@@ -25,6 +25,8 @@ namespace CursoApp.Shared.DataBaseModels
         }
 
         [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPregunta { get; set; }
         [Required]
         public string Pregunta { get; set; }

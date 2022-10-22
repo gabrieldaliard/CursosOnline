@@ -41,7 +41,9 @@ namespace CursoApp.Shared.DataBaseModels
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Cursos>().ToTable("Cursos"); 
+            //modelBuilder.Entity<Cursos>().ToTable("Cursito"); //Se realiza para indicar que la tabla Cursos va a pasar a crearse como Cursito en SQL.
+
+            //modelBuilder.Entity<UsuariosCursos>().ToTable("UsuariosCursos");
 
             base.OnModelCreating(modelBuilder);
             //modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
@@ -60,8 +62,53 @@ namespace CursoApp.Shared.DataBaseModels
                 .HasOne<Paises>(s => s.Paises)
                 .WithMany(ad => ad.Instructores)
                 .HasForeignKey(ad => ad.IdPais)
-                .OnDelete(DeleteBehavior.NoAction)
-                ;
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+                modelBuilder.Entity<Instructores>()
+                .HasMany<Cursos>(s => s.Cursos)
+                .WithOne(ad => ad.Instructores)
+                .HasForeignKey(ad => ad.IdCurso)
+                .IsRequired(false);
+                
+            });
+
+            modelBuilder.Entity<Estados>(entity =>
+            {
+
+                modelBuilder.Entity<Estados>()
+                .HasMany<Instructores>(s => s.Instructores)
+                .WithOne(ad => ad.Estados)
+                .HasForeignKey(ad => ad.IdInstructor);
+
+                modelBuilder.Entity<Estados>()
+                .HasMany<Cursos>(s => s.Cursos)
+                .WithOne(ad => ad.Estados)
+                .HasForeignKey(ad => ad.IdCurso);
+
+                modelBuilder.Entity<Estados>()
+                .HasMany<Usuarios>(s => s.Usuarios)
+                .WithOne(ad => ad.Estados)
+                .HasForeignKey(ad => ad.IdUsuario);
+
+
+            });
+
+            modelBuilder.Entity<Paises>(entity =>
+            {
+
+                modelBuilder.Entity<Instructores>()
+                .HasOne<Paises>(s => s.Paises)
+                .WithMany(ad => ad.Instructores)
+                .HasForeignKey(ad => ad.IdPais)
+                .OnDelete(DeleteBehavior.NoAction);
+
+                modelBuilder.Entity<Usuarios>()
+                .HasOne<Paises>(s => s.Paises)
+                .WithMany(ad => ad.Usuarios)
+                .HasForeignKey(ad => ad.IdUsuario)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
             });
 
@@ -91,16 +138,20 @@ namespace CursoApp.Shared.DataBaseModels
                 .WithMany(ad => ad.Cursos)
                 .HasForeignKey(ad => ad.idInstructor)
                 .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
                 ;
 
+                modelBuilder.Entity<Cursos>()
+                .HasMany<Usuarios>(s => s.Usuarios)
+                .WithMany(ad => ad.Cursos)
+                .UsingEntity<UsuariosCursos>(); 
+                ;
+                
                 //entity.Property(e => e.idInstructor).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.IdEstado).HasDefaultValueSql("((1))");
 
             });
-
-
-
 
 
             modelBuilder.Entity<Usuarios>(entity =>
@@ -113,6 +164,19 @@ namespace CursoApp.Shared.DataBaseModels
                 entity.Property(e => e.UltimoAcceso)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
+
+                modelBuilder.Entity<Usuarios>()
+                .HasOne<Paises>(s => s.Paises)
+                .WithMany(ad => ad.Usuarios)
+                .HasForeignKey(ad => ad.IdUsuario)
+                .OnDelete(DeleteBehavior.NoAction);
+
+                modelBuilder.Entity<Usuarios>()
+                .HasMany<Cursos>(s => s.Cursos)
+                .WithMany(ad => ad.Usuarios)
+                ;
+
+
             });
             
 
@@ -137,8 +201,8 @@ namespace CursoApp.Shared.DataBaseModels
             modelBuilder.Entity<Instructores>().HasData(new Instructores { IdInstructor = 3, Nombre = "DummyNombre2", Apellido = "DummyApellido2", IdPais = 2, Descripcion = "DummyDescripcion2" });
             modelBuilder.Entity<Instructores>().HasData(new Instructores { IdInstructor = 4, Nombre = "DummyNombre3", Apellido = "DummyApellido3", IdPais = 2,  Descripcion = "DummyDescripcion3" });
 
-            modelBuilder.Entity<Usuarios>().HasData(new Usuarios { IdUsuario = 1, Apellido = "DummyApellido1", IdPais = 1, Nombre = "DummyNombre1", Email = "DummyNombre1.DummyApellido1@false.com.ar" });
-            modelBuilder.Entity<Usuarios>().HasData(new Usuarios { IdUsuario = 2, Nombre = "DummyNombre2", IdPais = 1, Email = "DummyNombre1@false.com.ar" });
+            modelBuilder.Entity<Usuarios>().HasData(new Usuarios { IdUsuario = 1, Apellido = "DummyApellido1", Nombre = "DummyNombre1", IdPais = 1, Email = "DummyNombre1.DummyApellido1@false.com.ar" });
+            modelBuilder.Entity<Usuarios>().HasData(new Usuarios { IdUsuario = 2, Apellido = "DummyApellido2", IdPais = 1, Email = "DummyNombre1@false.com.ar" });
 
             modelBuilder.Entity<Cursos>().HasData(new Cursos { IdCurso = 1, idInstructor = 1, Titulo = "Curso de Pan Dulce", IdEstado = 1  });
             modelBuilder.Entity<Cursos>().HasData(new Cursos { IdCurso = 2, idInstructor = 2, Titulo = "Curso de Pan Salado", IdEstado = 1 });

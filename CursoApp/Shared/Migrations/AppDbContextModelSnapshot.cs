@@ -31,7 +31,9 @@ namespace CursoApp.Shared.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCurso"), 1L, 1);
 
                     b.Property<bool>("Destacado")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
 
                     b.Property<int?>("Estudiantes")
                         .ValueGeneratedOnAdd()
@@ -49,7 +51,9 @@ namespace CursoApp.Shared.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("IdEstado")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<int?>("Interesados")
                         .ValueGeneratedOnAdd()
@@ -64,14 +68,36 @@ namespace CursoApp.Shared.Migrations
                     b.Property<int>("idInstructor")
                         .HasColumnType("int");
 
+                    b.Property<int>("idUsuario")
+                        .HasColumnType("int");
+
                     b.HasKey("IdCurso");
 
-                    b.HasIndex("IdEstado")
-                        .IsUnique();
+                    b.HasIndex("IdEstado");
 
                     b.HasIndex("idInstructor");
 
-                    b.ToTable("Cursos", (string)null);
+                    b.ToTable("Cursos");
+
+                    b.HasData(
+                        new
+                        {
+                            IdCurso = 1,
+                            Destacado = false,
+                            IdEstado = 1,
+                            Titulo = "Curso de Pan Dulce",
+                            idInstructor = 1,
+                            idUsuario = 0
+                        },
+                        new
+                        {
+                            IdCurso = 2,
+                            Destacado = false,
+                            IdEstado = 1,
+                            Titulo = "Curso de Pan Salado",
+                            idInstructor = 2,
+                            idUsuario = 0
+                        });
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Estados", b =>
@@ -90,6 +116,12 @@ namespace CursoApp.Shared.Migrations
                     b.Property<int>("IdCurso")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdInstructor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.HasKey("IdEstado");
 
                     b.ToTable("Estados");
@@ -99,31 +131,41 @@ namespace CursoApp.Shared.Migrations
                         {
                             IdEstado = 1,
                             Descripcion = "Nuevo",
-                            IdCurso = 0
+                            IdCurso = 0,
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdEstado = 2,
                             Descripcion = "Activo",
-                            IdCurso = 0
+                            IdCurso = 0,
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdEstado = 3,
                             Descripcion = "Inactivo",
-                            IdCurso = 0
+                            IdCurso = 0,
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdEstado = 4,
                             Descripcion = "Suspendido",
-                            IdCurso = 0
+                            IdCurso = 0,
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdEstado = 5,
                             Descripcion = "Baja",
-                            IdCurso = 0
+                            IdCurso = 0,
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         });
                 });
 
@@ -134,6 +176,10 @@ namespace CursoApp.Shared.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAcademia"), 1L, 1);
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("IdAcademia");
 
@@ -146,27 +192,35 @@ namespace CursoApp.Shared.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdInstructor"), 1L, 1);
-
                     b.Property<string>("Apellido")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("IdCurso")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdEstado")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<int>("IdPais")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PaisesIdPais")
-                        .HasColumnType("int");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("IdInstructor");
 
-                    b.HasIndex("PaisesIdPais");
+                    b.HasIndex("IdPais");
 
                     b.ToTable("Instructores");
 
@@ -176,6 +230,8 @@ namespace CursoApp.Shared.Migrations
                             IdInstructor = 1,
                             Apellido = "Diaz",
                             Descripcion = "Florcita",
+                            IdCurso = 0,
+                            IdEstado = 0,
                             IdPais = 1,
                             Nombre = "Florencia"
                         },
@@ -184,6 +240,8 @@ namespace CursoApp.Shared.Migrations
                             IdInstructor = 2,
                             Apellido = "DummyApellido1",
                             Descripcion = "DummyDescripcion1",
+                            IdCurso = 0,
+                            IdEstado = 0,
                             IdPais = 1,
                             Nombre = "DummyNombre1"
                         },
@@ -192,6 +250,8 @@ namespace CursoApp.Shared.Migrations
                             IdInstructor = 3,
                             Apellido = "DummyApellido2",
                             Descripcion = "DummyDescripcion2",
+                            IdCurso = 0,
+                            IdEstado = 0,
                             IdPais = 2,
                             Nombre = "DummyNombre2"
                         },
@@ -200,7 +260,9 @@ namespace CursoApp.Shared.Migrations
                             IdInstructor = 4,
                             Apellido = "DummyApellido3",
                             Descripcion = "DummyDescripcion3",
-                            IdPais = 0,
+                            IdCurso = 0,
+                            IdEstado = 0,
+                            IdPais = 2,
                             Nombre = "DummyNombre3"
                         });
                 });
@@ -216,6 +278,12 @@ namespace CursoApp.Shared.Migrations
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IdInstructor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.HasKey("IdPais");
 
                     b.ToTable("Paises");
@@ -224,47 +292,65 @@ namespace CursoApp.Shared.Migrations
                         new
                         {
                             IdPais = 1,
-                            Descripcion = "Argentina"
+                            Descripcion = "Argentina",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 2,
-                            Descripcion = "Germany"
+                            Descripcion = "Germany",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 3,
-                            Descripcion = "Netherlands"
+                            Descripcion = "Netherlands",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 4,
-                            Descripcion = "USA"
+                            Descripcion = "USA",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 5,
-                            Descripcion = "Japan"
+                            Descripcion = "Japan",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 6,
-                            Descripcion = "China"
+                            Descripcion = "China",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 7,
-                            Descripcion = "UK"
+                            Descripcion = "UK",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 8,
-                            Descripcion = "France"
+                            Descripcion = "France",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         },
                         new
                         {
                             IdPais = 9,
-                            Descripcion = "Brazil"
+                            Descripcion = "Brazil",
+                            IdInstructor = 0,
+                            IdUsuario = 0
                         });
                 });
 
@@ -295,9 +381,8 @@ namespace CursoApp.Shared.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"), 1L, 1);
-
                     b.Property<string>("Apellido")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Contraseña")
@@ -312,15 +397,17 @@ namespace CursoApp.Shared.Migrations
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
+                    b.Property<int>("IdCursos")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdEstado")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdPais")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PaisesIdPais")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UltimoAcceso")
                         .ValueGeneratedOnAdd()
@@ -328,8 +415,6 @@ namespace CursoApp.Shared.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.HasKey("IdUsuario");
-
-                    b.HasIndex("PaisesIdPais");
 
                     b.ToTable("Usuarios");
 
@@ -339,15 +424,19 @@ namespace CursoApp.Shared.Migrations
                             IdUsuario = 1,
                             Apellido = "DummyApellido1",
                             Email = "DummyNombre1.DummyApellido1@false.com.ar",
+                            IdCursos = 0,
+                            IdEstado = 0,
                             IdPais = 1,
                             Nombre = "DummyNombre1"
                         },
                         new
                         {
                             IdUsuario = 2,
+                            Apellido = "DummyApellido2",
                             Email = "DummyNombre1@false.com.ar",
-                            IdPais = 1,
-                            Nombre = "DummyNombre2"
+                            IdCursos = 0,
+                            IdEstado = 0,
+                            IdPais = 1
                         });
                 });
 
@@ -359,40 +448,38 @@ namespace CursoApp.Shared.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdCurso")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdCursoNavigationIdCurso")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdUsuarioNavigationIdUsuario")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCursoNavigationIdCurso");
-
-                    b.HasIndex("IdUsuarioNavigationIdUsuario");
-
                     b.ToTable("UsuariosCursos");
+                });
+
+            modelBuilder.Entity("CursosUsuarios", b =>
+                {
+                    b.Property<int>("CursosIdCurso")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuariosIdUsuario")
+                        .HasColumnType("int");
+
+                    b.HasKey("CursosIdCurso", "UsuariosIdUsuario");
+
+                    b.HasIndex("UsuariosIdUsuario");
+
+                    b.ToTable("CursosUsuarios");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Cursos", b =>
                 {
                     b.HasOne("CursoApp.Shared.DataBaseModels.Estados", "Estados")
-                        .WithOne("Cursos")
-                        .HasForeignKey("CursoApp.Shared.DataBaseModels.Cursos", "IdEstado")
+                        .WithMany("Cursos")
+                        .HasForeignKey("IdEstado")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CursoApp.Shared.DataBaseModels.Instructores", "Instructores")
                         .WithMany("Cursos")
                         .HasForeignKey("idInstructor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Estados");
 
@@ -401,45 +488,64 @@ namespace CursoApp.Shared.Migrations
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Instructores", b =>
                 {
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Estados", "Estados")
+                        .WithMany("Instructores")
+                        .HasForeignKey("IdInstructor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
                         .WithMany("Instructores")
-                        .HasForeignKey("PaisesIdPais");
+                        .HasForeignKey("IdPais")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Estados");
 
                     b.Navigation("Paises");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Usuarios", b =>
                 {
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Estados", "Estados")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
-                        .WithMany()
-                        .HasForeignKey("PaisesIdPais");
+                        .WithMany("Usuarios")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Estados");
 
                     b.Navigation("Paises");
                 });
 
-            modelBuilder.Entity("CursoApp.Shared.DataBaseModels.UsuariosCursos", b =>
+            modelBuilder.Entity("CursosUsuarios", b =>
                 {
-                    b.HasOne("CursoApp.Shared.DataBaseModels.Cursos", "IdCursoNavigation")
-                        .WithMany("UsuariosCursos")
-                        .HasForeignKey("IdCursoNavigationIdCurso");
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Cursos", null)
+                        .WithMany()
+                        .HasForeignKey("CursosIdCurso")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("CursoApp.Shared.DataBaseModels.Usuarios", "IdUsuarioNavigation")
-                        .WithMany("UsuariosCursos")
-                        .HasForeignKey("IdUsuarioNavigationIdUsuario");
-
-                    b.Navigation("IdCursoNavigation");
-
-                    b.Navigation("IdUsuarioNavigation");
-                });
-
-            modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Cursos", b =>
-                {
-                    b.Navigation("UsuariosCursos");
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Usuarios", null)
+                        .WithMany()
+                        .HasForeignKey("UsuariosIdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Estados", b =>
                 {
                     b.Navigation("Cursos");
+
+                    b.Navigation("Instructores");
+
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Instructores", b =>
@@ -450,11 +556,8 @@ namespace CursoApp.Shared.Migrations
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Paises", b =>
                 {
                     b.Navigation("Instructores");
-                });
 
-            modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Usuarios", b =>
-                {
-                    b.Navigation("UsuariosCursos");
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

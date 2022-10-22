@@ -38,6 +38,7 @@ namespace CursoApp.Shared.DataBaseModels
         public int idEntidad { get => IdInstructor; set => IdInstructor = value; }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdInstructor { get; set; } 
 
         [Required]

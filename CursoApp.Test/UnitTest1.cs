@@ -72,11 +72,11 @@ namespace CursoApp.Test
         [TestMethod]
         public void Cursos_metodos_ok()
         {
-            Cursos curso1 = new Cursos(1, "Prueba de creación");
-
-            curso1.IdEstado = 1;
-            Assert.AreEqual(1, curso1.idEntidad);
+            Cursos curso1 = new Cursos(1, "Prueba de creación",1 , 1);
             
+            Assert.AreEqual(1, curso1.idEntidad);
+            Assert.AreEqual("Prueba de creación", curso1.Titulo);
+
         }
 
 

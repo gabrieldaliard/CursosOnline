@@ -13,12 +13,18 @@ namespace CursoApp.Shared.DataBaseModels
         public int idEntidad { get => Id; set => Id = value; }
 
         [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required]
         public int IdCurso { get; set; }
-        public int IdUsuario { get; set; }
+        public virtual ICollection<Cursos> Cursos { get; set; }
 
-        public virtual Cursos IdCursoNavigation { get; set; }
-        public virtual Usuarios IdUsuarioNavigation { get; set; }
+        [Required]
+        public int IdUsuario { get; set; }
+        public virtual ICollection<Usuarios> Usuarios { get; set; }
+
+
     }
 }

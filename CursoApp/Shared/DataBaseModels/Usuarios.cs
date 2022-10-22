@@ -11,31 +11,38 @@ namespace CursoApp.Shared.DataBaseModels
     {
         public Usuarios()
         {
-            UsuariosCursos = new HashSet<UsuariosCursos>();
+            //UsuariosCursos = new HashSet<UsuariosCursos>();
         }
 
         [NotMapped]
         public int idEntidad { get => IdUsuario; set => IdUsuario = value; }
 
         [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdUsuario { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
+        public string Contraseña { get; set; }
         public DateTime? FechaInscripcion { get; set; }
-        public DateTime? UltimoAcceso { get; set; }
-        [Required]
+        public DateTime? UltimoAcceso { get; set; }        
         public string Nombre { get; set; }
+        [Required]
         public string Apellido { get; set; }
 
-        [ForeignKey("IdPais")]
         [Required]
         public int IdPais { get; set; }
+        public Paises Paises { get; set; } //Indica que estamos haciendo referencia a una tabla externa
+             
+        [Required]
+        public int IdEstado { get; set; }
+        public Estados Estados { get; set; } //Indica que estamos haciendo referencia a una tabla externa
 
-        
-        public string Contraseña { get; set; }
+        public int IdCursos { get; set; }
+        public ICollection<Cursos> Cursos { get; set; }
 
-        public virtual Paises Paises { get; set; }
-        public virtual ICollection<UsuariosCursos> UsuariosCursos { get; set; }
+
     }
 }

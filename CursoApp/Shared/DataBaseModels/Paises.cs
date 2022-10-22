@@ -23,7 +23,11 @@ namespace CursoApp.Shared.DataBaseModels
 
         public string Descripcion { get; set; }
 
+        public int IdInstructor { get; set; }
         public virtual ICollection<Instructores> Instructores { get; set; }
+
+        public int IdUsuario { get; set; }
+        public virtual ICollection<Usuarios> Usuarios { get; set; }
 
     }
 }
