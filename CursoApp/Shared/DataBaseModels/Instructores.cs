@@ -56,7 +56,7 @@ namespace CursoApp.Shared.DataBaseModels
 
         [Required]
         public int IdPais { get; set; }
-        public virtual Paises Paises { get; set; }
+        public Paises Paises { get; set; }
 
         
         public int IdCurso { get; set; }

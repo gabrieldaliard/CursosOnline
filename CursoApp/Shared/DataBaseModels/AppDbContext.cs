@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -24,7 +25,7 @@ namespace CursoApp.Shared.DataBaseModels
         public virtual DbSet<Paises> Paises { get; set; }
         public virtual DbSet<PreguntasFreq> PreguntasFreqs { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
-        public virtual DbSet<UsuariosCursos> UsuariosCursos { get; set; }
+        //public virtual DbSet<UsuariosCursos> UsuariosCursos { get; set; }
         public virtual DbSet<Cursos> Cursos { get; set; }
 
 
@@ -61,8 +62,8 @@ namespace CursoApp.Shared.DataBaseModels
                 modelBuilder.Entity<Instructores>()
                 .HasOne<Paises>(s => s.Paises)
                 .WithMany(ad => ad.Instructores)
-                .HasForeignKey(ad => ad.IdPais)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(ad => ad.IdPais);
+                //.OnDelete(DeleteBehavior.NoAction);
 
 
                 modelBuilder.Entity<Instructores>()
@@ -97,17 +98,17 @@ namespace CursoApp.Shared.DataBaseModels
             modelBuilder.Entity<Paises>(entity =>
             {
 
-                modelBuilder.Entity<Instructores>()
-                .HasOne<Paises>(s => s.Paises)
-                .WithMany(ad => ad.Instructores)
-                .HasForeignKey(ad => ad.IdPais)
-                .OnDelete(DeleteBehavior.NoAction);
+                modelBuilder.Entity<Paises>()
+                .HasMany<Instructores>(s => s.Instructores)
+                .WithOne(ad => ad.Paises)
+                .HasForeignKey(ad => ad.IdInstructor);
+                //.OnDelete(DeleteBehavior.NoAction);
 
-                modelBuilder.Entity<Usuarios>()
-                .HasOne<Paises>(s => s.Paises)
-                .WithMany(ad => ad.Usuarios)
+                modelBuilder.Entity<Paises>()
+                .HasMany<Usuarios>(s => s.Usuarios)
+                .WithOne(ad => ad.Paises)
                 .HasForeignKey(ad => ad.IdUsuario)
-                .OnDelete(DeleteBehavior.NoAction);
+                ;//.OnDelete(DeleteBehavior.NoAction);
 
 
             });
@@ -144,7 +145,14 @@ namespace CursoApp.Shared.DataBaseModels
                 modelBuilder.Entity<Cursos>()
                 .HasMany<Usuarios>(s => s.Usuarios)
                 .WithMany(ad => ad.Cursos)
-                .UsingEntity<UsuariosCursos>(); 
+                 .UsingEntity<Dictionary<string, object>>(
+                "UsuariosCursos",
+                j => j.HasOne<Usuarios>().WithMany().OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Cursos>().WithMany().OnDelete(DeleteBehavior.ClientCascade)
+            );
+
+                //.OnDelete(DeleteBehavior.NoAction)
+                //.UsingEntity<UsuariosCursos>(); 
                 ;
                 
                 //entity.Property(e => e.idInstructor).HasDefaultValueSql("((1))");
@@ -168,14 +176,24 @@ namespace CursoApp.Shared.DataBaseModels
                 modelBuilder.Entity<Usuarios>()
                 .HasOne<Paises>(s => s.Paises)
                 .WithMany(ad => ad.Usuarios)
-                .HasForeignKey(ad => ad.IdUsuario)
+                .HasForeignKey(ad => ad.IdPais)
                 .OnDelete(DeleteBehavior.NoAction);
 
-                modelBuilder.Entity<Usuarios>()
-                .HasMany<Cursos>(s => s.Cursos)
-                .WithMany(ad => ad.Usuarios)
-                ;
+                //Tengo 1 pais con muchos usuarios donde la fk desde usuarios es IdPais
 
+                //modelBuilder.Entity<Usuarios>()
+                //.HasMany<Cursos>(s => s.Cursos)
+                //.WithMany(ad => ad.Usuarios)
+                //;
+
+                //modelBuilder.Entity<Usuarios>()
+                //.HasMany<Cursos>(s => s.Cursos)
+                //.WithMany(ad => ad.Usuarios)
+                // .UsingEntity<Dictionary<string, object>>(
+                //"UsuariosCursos",
+                //j => j.HasOne<Cursos>().WithMany().OnDelete(DeleteBehavior.Cascade),
+                //j => j.HasOne<Usuarios>().WithMany().OnDelete(DeleteBehavior.ClientCascade)
+                //);
 
             });
             

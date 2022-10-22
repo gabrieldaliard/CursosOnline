@@ -220,8 +220,6 @@ namespace CursoApp.Shared.Migrations
 
                     b.HasKey("IdInstructor");
 
-                    b.HasIndex("IdPais");
-
                     b.ToTable("Instructores");
 
                     b.HasData(
@@ -416,6 +414,8 @@ namespace CursoApp.Shared.Migrations
 
                     b.HasKey("IdUsuario");
 
+                    b.HasIndex("IdPais");
+
                     b.ToTable("Usuarios");
 
                     b.HasData(
@@ -440,20 +440,7 @@ namespace CursoApp.Shared.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CursoApp.Shared.DataBaseModels.UsuariosCursos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UsuariosCursos");
-                });
-
-            modelBuilder.Entity("CursosUsuarios", b =>
+            modelBuilder.Entity("UsuariosCursos", b =>
                 {
                     b.Property<int>("CursosIdCurso")
                         .HasColumnType("int");
@@ -465,7 +452,7 @@ namespace CursoApp.Shared.Migrations
 
                     b.HasIndex("UsuariosIdUsuario");
 
-                    b.ToTable("CursosUsuarios");
+                    b.ToTable("UsuariosCursos");
                 });
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Cursos", b =>
@@ -496,8 +483,8 @@ namespace CursoApp.Shared.Migrations
 
                     b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
                         .WithMany("Instructores")
-                        .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("IdInstructor")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Estados");
@@ -507,16 +494,16 @@ namespace CursoApp.Shared.Migrations
 
             modelBuilder.Entity("CursoApp.Shared.DataBaseModels.Usuarios", b =>
                 {
+                    b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("IdPais")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("CursoApp.Shared.DataBaseModels.Estados", "Estados")
                         .WithMany("Usuarios")
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Estados");
@@ -524,12 +511,12 @@ namespace CursoApp.Shared.Migrations
                     b.Navigation("Paises");
                 });
 
-            modelBuilder.Entity("CursosUsuarios", b =>
+            modelBuilder.Entity("UsuariosCursos", b =>
                 {
                     b.HasOne("CursoApp.Shared.DataBaseModels.Cursos", null)
                         .WithMany()
                         .HasForeignKey("CursosIdCurso")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("CursoApp.Shared.DataBaseModels.Usuarios", null)

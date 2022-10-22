@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CursoApp.Shared.Migrations
 {
-    public partial class initial2 : Migration
+    public partial class initial3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,18 +68,6 @@ namespace CursoApp.Shared.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsuariosCursos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsuariosCursos", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Instructores",
                 columns: table => new
                 {
@@ -101,10 +89,11 @@ namespace CursoApp.Shared.Migrations
                         principalColumn: "IdEstado",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Instructores_Paises_IdPais",
-                        column: x => x.IdPais,
+                        name: "FK_Instructores_Paises_IdInstructor",
+                        column: x => x.IdInstructor,
                         principalTable: "Paises",
-                        principalColumn: "IdPais");
+                        principalColumn: "IdPais",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,8 +121,8 @@ namespace CursoApp.Shared.Migrations
                         principalColumn: "IdEstado",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Usuarios_Paises_IdUsuario",
-                        column: x => x.IdUsuario,
+                        name: "FK_Usuarios_Paises_IdPais",
+                        column: x => x.IdPais,
                         principalTable: "Paises",
                         principalColumn: "IdPais");
                 });
@@ -171,7 +160,7 @@ namespace CursoApp.Shared.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CursosUsuarios",
+                name: "UsuariosCursos",
                 columns: table => new
                 {
                     CursosIdCurso = table.Column<int>(type: "int", nullable: false),
@@ -179,21 +168,18 @@ namespace CursoApp.Shared.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CursosUsuarios", x => new { x.CursosIdCurso, x.UsuariosIdUsuario });
+                    table.PrimaryKey("PK_UsuariosCursos", x => new { x.CursosIdCurso, x.UsuariosIdUsuario });
                     table.ForeignKey(
-                        name: "FK_CursosUsuarios_Cursos_CursosIdCurso",
+                        name: "FK_UsuariosCursos_Cursos_CursosIdCurso",
                         column: x => x.CursosIdCurso,
                         principalTable: "Cursos",
-                        principalColumn: "IdCurso",
-                        onUpdate: ReferentialAction.NoAction,
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "IdCurso");
                     table.ForeignKey(
-                        name: "FK_CursosUsuarios_Usuarios_UsuariosIdUsuario",
+                        name: "FK_UsuariosCursos_Usuarios_UsuariosIdUsuario",
                         column: x => x.UsuariosIdUsuario,
                         principalTable: "Usuarios",
                         principalColumn: "IdUsuario",
-                        onUpdate: ReferentialAction.NoAction,
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -265,21 +251,18 @@ namespace CursoApp.Shared.Migrations
                 column: "idInstructor");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CursosUsuarios_UsuariosIdUsuario",
-                table: "CursosUsuarios",
-                column: "UsuariosIdUsuario");
+                name: "IX_Usuarios_IdPais",
+                table: "Usuarios",
+                column: "IdPais");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Instructores_IdPais",
-                table: "Instructores",
-                column: "IdPais");
+                name: "IX_UsuariosCursos_UsuariosIdUsuario",
+                table: "UsuariosCursos",
+                column: "UsuariosIdUsuario");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "CursosUsuarios");
-
             migrationBuilder.DropTable(
                 name: "InfoAcademia");
 
