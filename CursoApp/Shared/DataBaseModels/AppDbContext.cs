@@ -138,7 +138,7 @@ namespace CursoApp.Shared.DataBaseModels
                 .HasOne<Instructores>(s => s.Instructores)
                 .WithMany(ad => ad.Cursos)
                 .HasForeignKey(ad => ad.idInstructor)
-                .OnDelete(DeleteBehavior.NoAction)
+                //.OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
                 ;
 
@@ -147,8 +147,11 @@ namespace CursoApp.Shared.DataBaseModels
                 .WithMany(ad => ad.Cursos)
                  .UsingEntity<Dictionary<string, object>>(
                 "UsuariosCursos",
-                j => j.HasOne<Usuarios>().WithMany().OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Usuarios>().WithMany().OnDelete(DeleteBehavior.ClientCascade),
                 j => j.HasOne<Cursos>().WithMany().OnDelete(DeleteBehavior.ClientCascade)
+                
+
+            
             );
 
                 //.OnDelete(DeleteBehavior.NoAction)
@@ -176,24 +179,11 @@ namespace CursoApp.Shared.DataBaseModels
                 modelBuilder.Entity<Usuarios>()
                 .HasOne<Paises>(s => s.Paises)
                 .WithMany(ad => ad.Usuarios)
-                .HasForeignKey(ad => ad.IdPais)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(ad => ad.IdPais);
 
-                //Tengo 1 pais con muchos usuarios donde la fk desde usuarios es IdPais
 
-                //modelBuilder.Entity<Usuarios>()
-                //.HasMany<Cursos>(s => s.Cursos)
-                //.WithMany(ad => ad.Usuarios)
-                //;
 
-                //modelBuilder.Entity<Usuarios>()
-                //.HasMany<Cursos>(s => s.Cursos)
-                //.WithMany(ad => ad.Usuarios)
-                // .UsingEntity<Dictionary<string, object>>(
-                //"UsuariosCursos",
-                //j => j.HasOne<Cursos>().WithMany().OnDelete(DeleteBehavior.Cascade),
-                //j => j.HasOne<Usuarios>().WithMany().OnDelete(DeleteBehavior.ClientCascade)
-                //);
+
 
             });
             
@@ -224,6 +214,8 @@ namespace CursoApp.Shared.DataBaseModels
 
             modelBuilder.Entity<Cursos>().HasData(new Cursos { IdCurso = 1, idInstructor = 1, Titulo = "Curso de Pan Dulce", IdEstado = 1  });
             modelBuilder.Entity<Cursos>().HasData(new Cursos { IdCurso = 2, idInstructor = 2, Titulo = "Curso de Pan Salado", IdEstado = 1 });
+
+            
 
 
             OnModelCreatingPartial(modelBuilder);

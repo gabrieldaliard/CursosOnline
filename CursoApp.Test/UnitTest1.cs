@@ -48,6 +48,8 @@ namespace CursoApp.Test
 
                 Assert.AreEqual("¿Qué es esto?", preg.Pregunta.ToString());
 
+                
+
                 //context.Database.EnsureDeleted();
 
 
@@ -76,6 +78,8 @@ namespace CursoApp.Test
             
             Assert.AreEqual(1, curso1.idEntidad);
             Assert.AreEqual("Prueba de creación", curso1.Titulo);
+
+
 
         }
 

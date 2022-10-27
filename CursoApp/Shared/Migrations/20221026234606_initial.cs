@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CursoApp.Shared.Migrations
 {
-    public partial class initial3 : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -124,7 +124,8 @@ namespace CursoApp.Shared.Migrations
                         name: "FK_Usuarios_Paises_IdPais",
                         column: x => x.IdPais,
                         principalTable: "Paises",
-                        principalColumn: "IdPais");
+                        principalColumn: "IdPais",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,8 +179,7 @@ namespace CursoApp.Shared.Migrations
                         name: "FK_UsuariosCursos_Usuarios_UsuariosIdUsuario",
                         column: x => x.UsuariosIdUsuario,
                         principalTable: "Usuarios",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdUsuario");
                 });
 
             migrationBuilder.InsertData(

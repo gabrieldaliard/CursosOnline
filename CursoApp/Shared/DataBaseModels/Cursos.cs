@@ -31,7 +31,7 @@ namespace CursoApp.Shared.DataBaseModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdCurso { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El campo Título es requerido.")]
         [MaxLength(70)]
         public string Titulo { get; set; }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CursoApp.Shared.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221022164259_initial3")]
-    partial class initial3
+    [Migration("20221026234606_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -467,8 +467,7 @@ namespace CursoApp.Shared.Migrations
 
                     b.HasOne("CursoApp.Shared.DataBaseModels.Instructores", "Instructores")
                         .WithMany("Cursos")
-                        .HasForeignKey("idInstructor")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("idInstructor");
 
                     b.Navigation("Estados");
 
@@ -499,7 +498,7 @@ namespace CursoApp.Shared.Migrations
                     b.HasOne("CursoApp.Shared.DataBaseModels.Paises", "Paises")
                         .WithMany("Usuarios")
                         .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CursoApp.Shared.DataBaseModels.Estados", "Estados")
@@ -524,7 +523,7 @@ namespace CursoApp.Shared.Migrations
                     b.HasOne("CursoApp.Shared.DataBaseModels.Usuarios", null)
                         .WithMany()
                         .HasForeignKey("UsuariosIdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
