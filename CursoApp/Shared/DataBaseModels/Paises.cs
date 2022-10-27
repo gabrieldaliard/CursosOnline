@@ -11,8 +11,7 @@ namespace CursoApp.Shared.DataBaseModels
     {
         public Paises()
         {
-            Instructores = new HashSet<Instructores>();
-            Usuarios = new HashSet<Usuarios>();
+
         }
 
         [NotMapped]
@@ -24,7 +23,11 @@ namespace CursoApp.Shared.DataBaseModels
 
         public string Descripcion { get; set; }
 
+        public int IdInstructor { get; set; }
         public virtual ICollection<Instructores> Instructores { get; set; }
+
+        public int IdUsuario { get; set; }
         public virtual ICollection<Usuarios> Usuarios { get; set; }
+
     }
 }

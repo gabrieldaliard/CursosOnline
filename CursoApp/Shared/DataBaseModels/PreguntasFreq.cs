@@ -12,7 +12,21 @@ namespace CursoApp.Shared.DataBaseModels
         [NotMapped]
         public int idEntidad { get => IdPregunta; set => IdPregunta = value; }
 
+        public PreguntasFreq()
+        {
+
+        }
+
+        public PreguntasFreq(int xIdPregunta, string xPregunta, string xRespuesta)
+        {
+            IdPregunta = xIdPregunta;
+            Pregunta = xPregunta;   
+            Respuesta = xRespuesta;
+        }
+
         [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPregunta { get; set; }
         [Required]
         public string Pregunta { get; set; }

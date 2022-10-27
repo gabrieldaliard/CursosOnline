@@ -5,13 +5,16 @@
 
 <RadzenTemplateForm Model="@Curso" TItem="@Cursos" Data="Curso" Submit="handleSubmmitAsync" InvalidSubmit="handleInvalidSubmmit">
     <DataAnnotationsValidator />
-    <ValidationSummary />
+    
     <div class="row">
         <div class="col-md-4">
             <RadzenLabel Text="Titulo:" />
             <RadzenTextBox @bind-Value="Curso.Titulo" Placeholder="Titulo" style="width: 100%;">
+
             </RadzenTextBox>
+            <ValidationMessage For="() => Curso.Titulo"/>
         </div>
+        
 @*        <div class="col-md-4"></div>
         <div class="col-md-4">
             <RadzenLabel Text="Estado:" />

@@ -14,5 +14,9 @@ namespace CursoApp.Shared.DataBaseModels
 
         [Key]
         public int IdAcademia { get; set; }
+
+        [MaxLength(70)]
+        public string Descripcion { get; set; }
+
     }
 }
