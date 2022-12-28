@@ -31,6 +31,7 @@ namespace CursoApp.Shared.DataBaseModels
         public string Nombre { get; set; }
         [Required]
         public string Apellido { get; set; }
+        public int Dni { get; set; }
 
         [Required]
         public int IdPais { get; set; }

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursoApp.Shared", "CursoApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursoApp.Api", "CursoApp.Api\CursoApp.Api.csproj", "{90B9D525-CB0A-4712-85C1-B791F4160EC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursoApp.Test", "CursoApp.Test\CursoApp.Test.csproj", "{11D4E0F6-9FDC-49DD-99CD-149818380842}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursoApp.Test", "CursoApp.Test\CursoApp.Test.csproj", "{11D4E0F6-9FDC-49DD-99CD-149818380842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

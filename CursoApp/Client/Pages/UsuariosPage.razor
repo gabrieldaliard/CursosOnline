@@ -1,0 +1,45 @@
+﻿@page "/UsuariosPage"
+@using CursoApp.Shared.DataBaseModels;
+@implements IDisposable
+
+<RadzenGrid @ref="gridUsuarios" RowSelect="@clickFila" AllowPaging="true" Data="@xUsuario" TItem="CursoApp.Shared.DataBaseModels.Usuarios" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced" AllowSorting="true" AllowFiltering="true" PageSize="5" ColumnWidth="50px">
+    <Columns>        
+        <RadzenGridColumn TItem="Usuarios" Property="IdUsuario" Title="Usuario id" Visible="false" />
+        <RadzenGridColumn TItem="Usuarios" Property="Nombre" Title="Nombre" />
+        <RadzenGridColumn TItem="Usuarios" Property="Apellido" Title="Apellido" />
+        <RadzenGridColumn TItem="Usuarios" Property="Dni" Title="Dni" />
+        <RadzenGridColumn TItem="Usuarios" Property="IdEstado" Title="Estado" />
+        
+
+        <RadzenGridColumn TItem="Usuarios" Context="usuario" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="10px">
+            <Template Context="usuario">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Click="@(args => DeleteRowAsync(usuario))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+        </RadzenGridColumn>
+
+    </Columns>
+</RadzenGrid>
+
+@code{
+
+    RadzenGrid<Usuarios> gridUsuarios;
+
+    public async Task DeleteRowAsync(CursoApp.Shared.DataBaseModels.Usuarios usuario)
+    {
+        var confirmResult = await dialogService.Confirm("Se eliminará el usuario: " + usuario.Apellido, "Eliminar", new ConfirmOptions() { OkButtonText = "Aceptar", CancelButtonText = "Cancelar" });
+        if (confirmResult.HasValue && confirmResult.Value)
+        {
+            try
+            {
+                await UsuarioDataService.DeleteEntidadById(usuario.idEntidad);
+                ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Success, Summary = "usuario eliminado exitosamente.", Detail = "usuario Nro: " + usuario.idEntidad + ".", Duration = 8000 });
+                await gridUsuarios.Reload();
+            }
+            catch (Exception ex)
+            {
+                ShowNotification(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = "Error al eliminar el usuario.", Detail = "usuario Nro: " + usuario.idEntidad + ".", Duration = 8000 });
+            }
+        }
+    }
+}

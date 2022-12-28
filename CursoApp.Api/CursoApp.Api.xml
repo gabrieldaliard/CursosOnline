@@ -16,5 +16,17 @@
             Ejemplo de Request \
             </remarks>
         </member>
+        <member name="M:UsuarioApp.Api.Controllers.UsuariosController.GetAll(System.Int32,System.Int32,System.String)">
+            <summary>
+            Obtiene todos Usuarios disponibles.
+            </summary>
+            <param name="cantFilasPagina"> Cantidad de filas PAPAAAA</param>
+            <param name="offSetPagina"></param>
+            <param name="orderBy"></param>
+            <returns>IActionResult</returns>
+            <remarks>
+            Ejemplo de Request \
+            </remarks>
+        </member>
     </members>
 </doc>
